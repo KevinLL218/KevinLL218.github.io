@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>
+        小鹿的空间
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            游戏AI初探
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h1 id="randomness"><a href="#randomness" class="headerlink" title="randomness"></a>randomness</h1><h2 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h2><p>用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。</p>
+<ul>
+<li>Average or max speed </li>
+<li>Average or max acceleration </li>
+<li>Size, width, height, or mass</li>
+<li>Visual or physical reaction time </li>
+<li>Fire or reload rate for firing </li>
+<li>Refresh rate or cool-down rate for healing or special abilities </li>
+<li>Chance of missing or striking a critical hit</li>
+</ul>
+<h2 id="随机数过滤"><a href="#随机数过滤" class="headerlink" title="随机数过滤"></a>随机数过滤</h2><p>为了留住玩家，可以通过对随机数进行过滤，来让玩家或对手获得优势</p>
+<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><p>最后，柏林噪声不仅仅是图像领域，1D柏林噪声可以用于平滑过渡动作，动画，和许多其他的行为。</p>
+<ul>
+<li>Movement (direction, speed, acceleration) </li>
+<li>Layered onto animation (adding noise to facial movement or gaze [Perlin 97]) </li>
+<li>Accuracy (winning or losing streaks, being in the groove, luck, or success) </li>
+<li>Attention (guard alertness, response time) • Play style (defensive, offensive) </li>
+<li>Mood (calm, angry, happy, sad, depressed, manic, bored, engaged)</li>
+</ul>
+<h1 id="FSM"><a href="#FSM" class="headerlink" title="FSM"></a>FSM</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">FSMTransition</span> &#123;</span><br><span class="line">    <span class="comment">// 判断当前转换是否成立，如果为真，有条路从当前状态走到目标状态</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">()</span>;</span><br><span class="line">	<span class="comment">// 得到状态转换的最终状态</span></span><br><span class="line">    <span class="keyword">abstract</span> FSMachine <span class="title function_">getNextState</span><span class="params">()</span>;</span><br><span class="line">	<span class="comment">// 发生在原状态和目标状态中间的事</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onTransition</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">FSMachine</span> &#123;</span><br><span class="line">    <span class="comment">// 进入状态</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onEnter</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 每tick更新</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onUpdate</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 离开状态</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onExit</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 可选的状态转换路线</span></span><br><span class="line">    List&lt;FSMTransition&gt; transitions = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">FiniteStateMachine</span> &#123;</span><br><span class="line">    <span class="comment">// 主要更新方法</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">update</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="comment">// 判断当前状态的所有可能转换路线</span></span><br><span class="line">        <span class="keyword">for</span> (FSMTransition transition : activeState.transitions) &#123;</span><br><span class="line">            <span class="keyword">if</span> (transition.isValid()) &#123; <span class="comment">// 如果可以选择该路线</span></span><br><span class="line">                activeState.onExit(); </span><br><span class="line">                activeState = transition.getNextState();</span><br><span class="line">                transition.onTransition();</span><br><span class="line">                activeState.onEnter();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 更新状态</span></span><br><span class="line">        activeState.onUpdate();</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// 状态机所持有的所有状态</span></span><br><span class="line">    List&lt;FSMachine&gt; states;</span><br><span class="line">    <span class="comment">// 初始状态</span></span><br><span class="line">    FSMachine initState;</span><br><span class="line">    <span class="comment">// 当前状态</span></span><br><span class="line">    FSMachine activeState;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，具体的逻辑在<code>onExit(), onUpdate(), onExit(), onTransition()</code>这四个方法中实现，其中，<code>onTransition()</code>方法应与具体AI逻辑无关，如日志记录，全局事件等.</p>
+<h2 id="Hierarchical-FSM"><a href="#Hierarchical-FSM" class="headerlink" title="Hierarchical FSM"></a>Hierarchical FSM</h2><p>当开发到晚期时，状态会几十上百个，增加新状态时会很复杂且容易出错。</p>
+<blockquote>
+<p>在HFSM中，每个单独的状态都是一个状态机。可以使整个状态机分离到单独的多个状态机中.</p>
+</blockquote>
+<h2 id="Behavior-Trees"><a href="#Behavior-Trees" class="headerlink" title="Behavior Trees"></a>Behavior Trees</h2><p>a example:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Behavior</span> &#123;</span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onInit</span><span class="params">()</span>; <span class="comment">// 初次进入</span></span><br><span class="line">    <span class="keyword">abstract</span> State <span class="title function_">update</span><span class="params">()</span>; <span class="comment">// 更新状态</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onTerminate</span><span class="params">(State)</span>; <span class="comment">// 离开</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>行为树的实现可以通过<code>装饰器</code>或<code>组合</code>模式去实现。</p>
+<p>新的行为树可以多个实体共享，使用DSL，用于多种逻辑.</p>
+<h2 id="Utility-Systems"><a href="#Utility-Systems" class="headerlink" title="Utility Systems"></a>Utility Systems</h2><p>效用系统，用于处理非布尔值信息。比起饿了吃饭，效用系统计算了多饿，多重等非01信息。通过多种因素计算出一个分数，或者加上一个随机值，根据最终的值进行选择。</p>
+<h2 id="Goal-Oriented-Action-Planners"><a href="#Goal-Oriented-Action-Planners" class="headerlink" title="Goal-Oriented Action Planners"></a>Goal-Oriented Action Planners</h2><p>目标导向型行为选择</p>
+<blockquote>
+<p> GOAP is derived from the Stanford Research Institute Problem Solver </p>
+</blockquote>
+<p>给予一个目标，然后在所有可选的方法中自行选择，让AI自动选择。</p>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <p>Copyright © 2020 <a class="flink" target="_blank" rel="noopener" href="https://hexo.io">Hexo</a>-<a class="flink" target="_blank" rel="noopener" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="black">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>
