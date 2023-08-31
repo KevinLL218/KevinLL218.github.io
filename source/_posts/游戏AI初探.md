@@ -1,7 +1,8 @@
 ---
 title: 游戏AI初探
 date: 2023-08-30 14:34:54
-cover: 
+categories:
+  - 游戏相关
 tags: GameDev
 ---
 
