@@ -3,7 +3,7 @@ title: 一次git代码合并导致的问题
 date: 2023-09-08 15:23:38
 categories:
   - 开发相关
-tags: [java, git]
+tags: [Java, Git]
 ---
 
 > 因为一次代码合并失误，导致线上事故，扣了绩效，引以为戒
