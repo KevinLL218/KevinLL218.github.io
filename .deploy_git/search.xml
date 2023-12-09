@@ -66,46 +66,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Controller中返回值的处理逻辑</title>
-    <url>/2023/09/07/Controller%E4%B8%AD%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91/</url>
-    <content><![CDATA[<!-- TOC -->
-<ul>
-<li><a href="#responsebody-%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%A4%84%E7%90%86-">@ResponseBody 注解的处理</a></li>
-<li><a href="#contentnegotiationmanagerfactorybean">ContentNegotiationManagerFactoryBean</a></li>
-<li><a href="#responseentityt-%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8">ResponseEntity&lt;T&gt; 类的使用</a></li>
-<li><a href="#requestmappinghandleradapter-">RequestMappingHandlerAdapter</a><!-- TOC --></li>
-</ul>
-<p>在一次开发文件上传下载的任务中，学习了Spring中<code>Resource</code>类的使用, 不是<code>@Resource</code>, 本地测试项目是可以正常下载的，但是代码提交上去后发现返回的始终都是序列化的对象,而不是具体的文件, 通过对Spring返回值的学习和进一步追踪才找到问题所在。</p>
-<h1 id="ResponseBody-注解的处理"><a href="#ResponseBody-注解的处理" class="headerlink" title="@ResponseBody 注解的处理"></a>@ResponseBody 注解的处理</h1><blockquote>
-<p><code>@ResponseBody</code>注解顾名思义，就是将Controller的返回值经过处理写入到 <code>Response</code>中的<code>Body</code>字段上.具体处理方式则是通过各种<code>Converter</code>的实现类结合<code>MediaType</code> 去处理转换。  </p>
-</blockquote>
-<p> 虽然不知道谁控制着<code>Controller</code>注解，但是可以知道<code>@ResponseBody</code>注解是由<code>RequestResponseBodyMethodProcessor</code> 方法去处理的，该类同时还会处理方法参数中的<code>@RequestBody</code>注解,同样的，参数的读取也是通过”MessageConverter”来实现.</p>
-<p>因此，理论上也是可以通过修改Converter来控制返回值的类型的。而这个脑瘫项目就是这么处理的，将所有的返回类型都一刀切,全部都是json返回类型。</p>
-<h1 id="ContentNegotiationManagerFactoryBean"><a href="#ContentNegotiationManagerFactoryBean" class="headerlink" title="ContentNegotiationManagerFactoryBean"></a>ContentNegotiationManagerFactoryBean</h1><p>内容协商管理器工厂，就是控制入参和出参格式的类。这个工厂类是通过配置文件生成一个协商管理器，供Spring容器使用。可以通过配置文件配置支持的媒体类型和默认类型，而这个脑瘫项目就是只配置了json，默认也是<code>application/json</code>, 所以所有的返回值都以json字符串格式进行处理.  </p>
-<p>值得注意的是，该类本身是由工厂模式实现，而构建协商管理器的过程则是策略模式。最终的协商过程也是策略模式。</p>
-<h1 id="ResponseEntity-类的使用"><a href="#ResponseEntity-类的使用" class="headerlink" title="ResponseEntity&lt;T&gt; 类的使用"></a>ResponseEntity&lt;T&gt; 类的使用</h1><p>由于内容协商的修改，所以在本项目中,ResponseEntity已经失去了他的作用。  </p>
-<p>传统的MVC对于下载的处理方式是比较臃肿的，需要打开<code>HttpServletResponse</code>的输出流，设置响应头属性，和MIME属性，而这些操作既然都是一样的，那么<code>dont&#39;t repeat yourself</code> , 这也是该类的使用场景。<br>对于文件流，可以直接作为返回值，由内容协商管理器自动进行判断实现文件下载。</p>
-<pre><code class="java">@RestController
-class Demo &#123;
-    @GetMapping(&quot;file&quot;)
-    public ResponseEntity&lt;Resource&gt; download() &#123;
-        return new ResponseEntity&lt;&gt;(resource, HttpStatus.OK);
-    &#125;
-&#125;
-</code></pre>
-<p>还是由于项目中，修改了内容协商管理器，导致所有返回类型都是json，所以即使是文件流，其返回到前端依旧是json格式.</p>
-<h1 id="RequestMappingHandlerAdapter"><a href="#RequestMappingHandlerAdapter" class="headerlink" title="RequestMappingHandlerAdapter"></a>RequestMappingHandlerAdapter</h1><p>通过查阅资料及翻阅源码，大概知道了为什么自定义了<code>MessageConverter</code>导致ResponseEntity失效了。<br>顾名思义,<code>RequestMappingHandlerAdapter</code>就是处理<code>@RequestMapping</code>的类，接着会发现在这个类中有个字段是 <code>HandlerMethodReturnValueHandlerComposite</code>, 这是一个组合模式的实现类，处理方法返回值，通过debug得知运行时自动添加返回值处理策略，这些策略或者以<code>Handler</code>结尾，或者以<code>Processor</code>结尾，最终都会添加到这个组合类中,运行时根据返回值的类型进行动态地处理，比如以<code>ResponseEntity</code>作为返回值，会由<code>HttpEntityMethodProcessor</code>类进行处理。<br>程序到了这里， <code>ResponseEntity</code>还是能够正常处理的，但是当真正写结果的时候，发现是通过其父类的方法实现，而父类的方法则是上文所述的<code>MediaType</code>及其<code>HttpMessageConverter</code>实现类，原本根据不同的<code>MediaType</code>使用对应的<code>Converter</code>，此时由于只定义了<code>json</code>格式，其他格式也都默认为json，以至于最终的所有返回结果都是<code>JSONString</code>了。</p>
-<p>所以说，这个💩山项目自作聪明的方法，断绝了后续开发的扩展性，除非将其大改，否则就是💩上雕花。</p>
-]]></content>
-      <categories>
-        <category>开发相关</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>N2成绩以及展望</title>
     <url>/2023/08/21/JLPT-N2%E6%88%90%E7%BB%A9%E4%BB%A5%E5%8F%8A%E5%B1%95%E6%9C%9B/</url>
     <content><![CDATA[<!-- TOC -->
@@ -150,6 +110,46 @@ class Demo &#123;
       <tags>
         <tag>日语</tag>
         <tag>生活</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Controller中返回值的处理逻辑</title>
+    <url>/2023/09/07/Controller%E4%B8%AD%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91/</url>
+    <content><![CDATA[<!-- TOC -->
+<ul>
+<li><a href="#responsebody-%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%A4%84%E7%90%86-">@ResponseBody 注解的处理</a></li>
+<li><a href="#contentnegotiationmanagerfactorybean">ContentNegotiationManagerFactoryBean</a></li>
+<li><a href="#responseentityt-%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8">ResponseEntity&lt;T&gt; 类的使用</a></li>
+<li><a href="#requestmappinghandleradapter-">RequestMappingHandlerAdapter</a><!-- TOC --></li>
+</ul>
+<p>在一次开发文件上传下载的任务中，学习了Spring中<code>Resource</code>类的使用, 不是<code>@Resource</code>, 本地测试项目是可以正常下载的，但是代码提交上去后发现返回的始终都是序列化的对象,而不是具体的文件, 通过对Spring返回值的学习和进一步追踪才找到问题所在。</p>
+<h1 id="ResponseBody-注解的处理"><a href="#ResponseBody-注解的处理" class="headerlink" title="@ResponseBody 注解的处理"></a>@ResponseBody 注解的处理</h1><blockquote>
+<p><code>@ResponseBody</code>注解顾名思义，就是将Controller的返回值经过处理写入到 <code>Response</code>中的<code>Body</code>字段上.具体处理方式则是通过各种<code>Converter</code>的实现类结合<code>MediaType</code> 去处理转换。  </p>
+</blockquote>
+<p> 虽然不知道谁控制着<code>Controller</code>注解，但是可以知道<code>@ResponseBody</code>注解是由<code>RequestResponseBodyMethodProcessor</code> 方法去处理的，该类同时还会处理方法参数中的<code>@RequestBody</code>注解,同样的，参数的读取也是通过”MessageConverter”来实现.</p>
+<p>因此，理论上也是可以通过修改Converter来控制返回值的类型的。而这个脑瘫项目就是这么处理的，将所有的返回类型都一刀切,全部都是json返回类型。</p>
+<h1 id="ContentNegotiationManagerFactoryBean"><a href="#ContentNegotiationManagerFactoryBean" class="headerlink" title="ContentNegotiationManagerFactoryBean"></a>ContentNegotiationManagerFactoryBean</h1><p>内容协商管理器工厂，就是控制入参和出参格式的类。这个工厂类是通过配置文件生成一个协商管理器，供Spring容器使用。可以通过配置文件配置支持的媒体类型和默认类型，而这个脑瘫项目就是只配置了json，默认也是<code>application/json</code>, 所以所有的返回值都以json字符串格式进行处理.  </p>
+<p>值得注意的是，该类本身是由工厂模式实现，而构建协商管理器的过程则是策略模式。最终的协商过程也是策略模式。</p>
+<h1 id="ResponseEntity-类的使用"><a href="#ResponseEntity-类的使用" class="headerlink" title="ResponseEntity&lt;T&gt; 类的使用"></a>ResponseEntity&lt;T&gt; 类的使用</h1><p>由于内容协商的修改，所以在本项目中,ResponseEntity已经失去了他的作用。  </p>
+<p>传统的MVC对于下载的处理方式是比较臃肿的，需要打开<code>HttpServletResponse</code>的输出流，设置响应头属性，和MIME属性，而这些操作既然都是一样的，那么<code>dont&#39;t repeat yourself</code> , 这也是该类的使用场景。<br>对于文件流，可以直接作为返回值，由内容协商管理器自动进行判断实现文件下载。</p>
+<pre><code class="java">@RestController
+class Demo &#123;
+    @GetMapping(&quot;file&quot;)
+    public ResponseEntity&lt;Resource&gt; download() &#123;
+        return new ResponseEntity&lt;&gt;(resource, HttpStatus.OK);
+    &#125;
+&#125;
+</code></pre>
+<p>还是由于项目中，修改了内容协商管理器，导致所有返回类型都是json，所以即使是文件流，其返回到前端依旧是json格式.</p>
+<h1 id="RequestMappingHandlerAdapter"><a href="#RequestMappingHandlerAdapter" class="headerlink" title="RequestMappingHandlerAdapter"></a>RequestMappingHandlerAdapter</h1><p>通过查阅资料及翻阅源码，大概知道了为什么自定义了<code>MessageConverter</code>导致ResponseEntity失效了。<br>顾名思义,<code>RequestMappingHandlerAdapter</code>就是处理<code>@RequestMapping</code>的类，接着会发现在这个类中有个字段是 <code>HandlerMethodReturnValueHandlerComposite</code>, 这是一个组合模式的实现类，处理方法返回值，通过debug得知运行时自动添加返回值处理策略，这些策略或者以<code>Handler</code>结尾，或者以<code>Processor</code>结尾，最终都会添加到这个组合类中,运行时根据返回值的类型进行动态地处理，比如以<code>ResponseEntity</code>作为返回值，会由<code>HttpEntityMethodProcessor</code>类进行处理。<br>程序到了这里， <code>ResponseEntity</code>还是能够正常处理的，但是当真正写结果的时候，发现是通过其父类的方法实现，而父类的方法则是上文所述的<code>MediaType</code>及其<code>HttpMessageConverter</code>实现类，原本根据不同的<code>MediaType</code>使用对应的<code>Converter</code>，此时由于只定义了<code>json</code>格式，其他格式也都默认为json，以至于最终的所有返回结果都是<code>JSONString</code>了。</p>
+<p>所以说，这个💩山项目自作聪明的方法，断绝了后续开发的扩展性，除非将其大改，否则就是💩上雕花。</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
       </tags>
   </entry>
   <entry>
@@ -516,6 +516,100 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
+    <title>游戏AI初探</title>
+    <url>/2023/08/30/%E6%B8%B8%E6%88%8FAI%E5%88%9D%E6%8E%A2/</url>
+    <content><![CDATA[<h1 id="randomness"><a href="#randomness" class="headerlink" title="randomness"></a>randomness</h1><h2 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h2><p>用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。</p>
+<ul>
+<li>Average or max speed </li>
+<li>Average or max acceleration </li>
+<li>Size, width, height, or mass</li>
+<li>Visual or physical reaction time </li>
+<li>Fire or reload rate for firing </li>
+<li>Refresh rate or cool-down rate for healing or special abilities </li>
+<li>Chance of missing or striking a critical hit</li>
+</ul>
+<h2 id="随机数过滤"><a href="#随机数过滤" class="headerlink" title="随机数过滤"></a>随机数过滤</h2><p>为了留住玩家，可以通过对随机数进行过滤，来让玩家或对手获得优势</p>
+<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><p>最后，柏林噪声不仅仅是图像领域，1D柏林噪声可以用于平滑过渡动作，动画，和许多其他的行为。</p>
+<ul>
+<li>Movement (direction, speed, acceleration) </li>
+<li>Layered onto animation (adding noise to facial movement or gaze [Perlin 97]) </li>
+<li>Accuracy (winning or losing streaks, being in the groove, luck, or success) </li>
+<li>Attention (guard alertness, response time) • Play style (defensive, offensive) </li>
+<li>Mood (calm, angry, happy, sad, depressed, manic, bored, engaged)</li>
+</ul>
+<h1 id="FSM"><a href="#FSM" class="headerlink" title="FSM"></a>FSM</h1><pre><code class="java">public abstract class FSMTransition &#123;
+    // 判断当前转换是否成立，如果为真，有条路从当前状态走到目标状态
+    abstract boolean isValid();
+    // 得到状态转换的最终状态
+    abstract FSMachine getNextState();
+    // 发生在原状态和目标状态中间的事
+    abstract void onTransition();
+&#125;
+</code></pre>
+<pre><code class="java">public abstract static class FSMachine &#123;
+    // 进入状态
+    abstract void onEnter();
+    // 每tick更新
+    abstract void onUpdate();
+    // 离开状态
+    abstract void onExit();
+    // 可选的状态转换路线
+    List&lt;FSMTransition&gt; transitions = new ArrayList&lt;&gt;();
+&#125;
+</code></pre>
+<pre><code class="java">public static class FiniteStateMachine &#123;
+    // 主要更新方法
+    void update()&#123;
+        // 判断当前状态的所有可能转换路线
+        for (FSMTransition transition : activeState.transitions) &#123;
+            if (transition.isValid()) &#123; // 如果可以选择该路线
+                activeState.onExit(); 
+                activeState = transition.getNextState();
+                transition.onTransition();
+                activeState.onEnter();
+                break;
+            &#125;
+        &#125;
+        // 更新状态
+        activeState.onUpdate();
+    &#125;;
+    // 状态机所持有的所有状态
+    List&lt;FSMachine&gt; states;
+    // 初始状态
+    FSMachine initState;
+    // 当前状态
+    FSMachine activeState;
+&#125;
+</code></pre>
+<p>需要注意的是，具体的逻辑在<code>onExit(), onUpdate(), onExit(), onTransition()</code>这四个方法中实现，其中，<code>onTransition()</code>方法应与具体AI逻辑无关，如日志记录，全局事件等.</p>
+<h2 id="Hierarchical-FSM"><a href="#Hierarchical-FSM" class="headerlink" title="Hierarchical FSM"></a>Hierarchical FSM</h2><p>当开发到晚期时，状态会几十上百个，增加新状态时会很复杂且容易出错。</p>
+<blockquote>
+<p>在HFSM中，每个单独的状态都是一个状态机。可以使整个状态机分离到单独的多个状态机中.</p>
+</blockquote>
+<h2 id="Behavior-Trees"><a href="#Behavior-Trees" class="headerlink" title="Behavior Trees"></a>Behavior Trees</h2><p>a example:</p>
+<pre><code class="java">public abstract static class Behavior &#123;
+    abstract void onInit(); // 初次进入
+    abstract State update(); // 更新状态
+    abstract void onTerminate(State); // 离开
+&#125;
+</code></pre>
+<p>行为树的实现可以通过<code>装饰器</code>或<code>组合</code>模式去实现。</p>
+<p>新的行为树可以多个实体共享，使用DSL，用于多种逻辑.</p>
+<h2 id="Utility-Systems"><a href="#Utility-Systems" class="headerlink" title="Utility Systems"></a>Utility Systems</h2><p>效用系统，用于处理非布尔值信息。比起饿了吃饭，效用系统计算了多饿，多重等非01信息。通过多种因素计算出一个分数，或者加上一个随机值，根据最终的值进行选择。</p>
+<h2 id="Goal-Oriented-Action-Planners"><a href="#Goal-Oriented-Action-Planners" class="headerlink" title="Goal-Oriented Action Planners"></a>Goal-Oriented Action Planners</h2><p>目标导向型行为选择</p>
+<blockquote>
+<p> GOAP is derived from the Stanford Research Institute Problem Solver </p>
+</blockquote>
+<p>给予一个目标，然后在所有可选的方法中自行选择，让AI自动选择。</p>
+]]></content>
+      <categories>
+        <category>游戏相关</category>
+      </categories>
+      <tags>
+        <tag>GameDev</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>日语学习记录(持续更新)</title>
     <url>/2023/09/02/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</url>
     <content><![CDATA[<blockquote>
@@ -725,100 +819,6 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
-    <title>游戏AI初探</title>
-    <url>/2023/08/30/%E6%B8%B8%E6%88%8FAI%E5%88%9D%E6%8E%A2/</url>
-    <content><![CDATA[<h1 id="randomness"><a href="#randomness" class="headerlink" title="randomness"></a>randomness</h1><h2 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h2><p>用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。</p>
-<ul>
-<li>Average or max speed </li>
-<li>Average or max acceleration </li>
-<li>Size, width, height, or mass</li>
-<li>Visual or physical reaction time </li>
-<li>Fire or reload rate for firing </li>
-<li>Refresh rate or cool-down rate for healing or special abilities </li>
-<li>Chance of missing or striking a critical hit</li>
-</ul>
-<h2 id="随机数过滤"><a href="#随机数过滤" class="headerlink" title="随机数过滤"></a>随机数过滤</h2><p>为了留住玩家，可以通过对随机数进行过滤，来让玩家或对手获得优势</p>
-<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><p>最后，柏林噪声不仅仅是图像领域，1D柏林噪声可以用于平滑过渡动作，动画，和许多其他的行为。</p>
-<ul>
-<li>Movement (direction, speed, acceleration) </li>
-<li>Layered onto animation (adding noise to facial movement or gaze [Perlin 97]) </li>
-<li>Accuracy (winning or losing streaks, being in the groove, luck, or success) </li>
-<li>Attention (guard alertness, response time) • Play style (defensive, offensive) </li>
-<li>Mood (calm, angry, happy, sad, depressed, manic, bored, engaged)</li>
-</ul>
-<h1 id="FSM"><a href="#FSM" class="headerlink" title="FSM"></a>FSM</h1><pre><code class="java">public abstract class FSMTransition &#123;
-    // 判断当前转换是否成立，如果为真，有条路从当前状态走到目标状态
-    abstract boolean isValid();
-    // 得到状态转换的最终状态
-    abstract FSMachine getNextState();
-    // 发生在原状态和目标状态中间的事
-    abstract void onTransition();
-&#125;
-</code></pre>
-<pre><code class="java">public abstract static class FSMachine &#123;
-    // 进入状态
-    abstract void onEnter();
-    // 每tick更新
-    abstract void onUpdate();
-    // 离开状态
-    abstract void onExit();
-    // 可选的状态转换路线
-    List&lt;FSMTransition&gt; transitions = new ArrayList&lt;&gt;();
-&#125;
-</code></pre>
-<pre><code class="java">public static class FiniteStateMachine &#123;
-    // 主要更新方法
-    void update()&#123;
-        // 判断当前状态的所有可能转换路线
-        for (FSMTransition transition : activeState.transitions) &#123;
-            if (transition.isValid()) &#123; // 如果可以选择该路线
-                activeState.onExit(); 
-                activeState = transition.getNextState();
-                transition.onTransition();
-                activeState.onEnter();
-                break;
-            &#125;
-        &#125;
-        // 更新状态
-        activeState.onUpdate();
-    &#125;;
-    // 状态机所持有的所有状态
-    List&lt;FSMachine&gt; states;
-    // 初始状态
-    FSMachine initState;
-    // 当前状态
-    FSMachine activeState;
-&#125;
-</code></pre>
-<p>需要注意的是，具体的逻辑在<code>onExit(), onUpdate(), onExit(), onTransition()</code>这四个方法中实现，其中，<code>onTransition()</code>方法应与具体AI逻辑无关，如日志记录，全局事件等.</p>
-<h2 id="Hierarchical-FSM"><a href="#Hierarchical-FSM" class="headerlink" title="Hierarchical FSM"></a>Hierarchical FSM</h2><p>当开发到晚期时，状态会几十上百个，增加新状态时会很复杂且容易出错。</p>
-<blockquote>
-<p>在HFSM中，每个单独的状态都是一个状态机。可以使整个状态机分离到单独的多个状态机中.</p>
-</blockquote>
-<h2 id="Behavior-Trees"><a href="#Behavior-Trees" class="headerlink" title="Behavior Trees"></a>Behavior Trees</h2><p>a example:</p>
-<pre><code class="java">public abstract static class Behavior &#123;
-    abstract void onInit(); // 初次进入
-    abstract State update(); // 更新状态
-    abstract void onTerminate(State); // 离开
-&#125;
-</code></pre>
-<p>行为树的实现可以通过<code>装饰器</code>或<code>组合</code>模式去实现。</p>
-<p>新的行为树可以多个实体共享，使用DSL，用于多种逻辑.</p>
-<h2 id="Utility-Systems"><a href="#Utility-Systems" class="headerlink" title="Utility Systems"></a>Utility Systems</h2><p>效用系统，用于处理非布尔值信息。比起饿了吃饭，效用系统计算了多饿，多重等非01信息。通过多种因素计算出一个分数，或者加上一个随机值，根据最终的值进行选择。</p>
-<h2 id="Goal-Oriented-Action-Planners"><a href="#Goal-Oriented-Action-Planners" class="headerlink" title="Goal-Oriented Action Planners"></a>Goal-Oriented Action Planners</h2><p>目标导向型行为选择</p>
-<blockquote>
-<p> GOAP is derived from the Stanford Research Institute Problem Solver </p>
-</blockquote>
-<p>给予一个目标，然后在所有可选的方法中自行选择，让AI自动选择。</p>
-]]></content>
-      <categories>
-        <category>游戏相关</category>
-      </categories>
-      <tags>
-        <tag>GameDev</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>记一次被诈骗经历</title>
     <url>/2023/08/29/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%AF%88%E9%AA%97%E7%BB%8F%E5%8E%86/</url>
     <content><![CDATA[<!-- TOC -->
@@ -855,6 +855,22 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
+    <title>项目中elasticsearch的应用及思考</title>
+    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%ADelasticsearch%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/</url>
+    <content><![CDATA[<p><mark>建设中</mark>  </p>
+<p>关键字： MySQL, binlog, canal, 搜索，导出， elasticsearch, 模块</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+        <category>中间件</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
+        <tag>ES</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>详解从jenkins到docker的迁移过程</title>
     <url>/2023/09/08/%E8%AF%A6%E8%A7%A3%E4%BB%8Ejenkins%E5%88%B0docker%E7%9A%84%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B/</url>
     <content><![CDATA[<p><mark>建设中</mark></p>
@@ -872,6 +888,20 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
+    <title>项目中设计模式的尝试与反馈</title>
+    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%B0%9D%E8%AF%95%E4%B8%8E%E5%8F%8D%E9%A6%88/</url>
+    <content><![CDATA[<p><mark>建设中</mark><br>与其说Java是面向对象的，不如说是在面向对象的语言中实现面向过程. 一个方法里成千上万行逻辑，if用的也是尤达表达式，很难不让人怀疑原先维护这个项目的人是不是写C语言的。</p>
+<p>其实就算是C语言的函数，也没有这样一个函数写到底的，大都是按功能进行拆分，那么在这个项目中</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Coding</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>项目中缓存中间件的应用及思考</title>
     <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/</url>
     <content><![CDATA[<p><mark>建设中</mark></p>
@@ -884,36 +914,6 @@ class Demo &#123;
       <tags>
         <tag>Java Redis</tag>
         <tag>缓存</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>项目中elasticsearch的应用及思考</title>
-    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%ADelasticsearch%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/</url>
-    <content><![CDATA[<p><mark>建设中</mark>  </p>
-<p>关键字： MySQL, binlog, canal, 搜索，导出， elasticsearch, 模块</p>
-]]></content>
-      <categories>
-        <category>开发相关</category>
-        <category>中间件</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Spring</tag>
-        <tag>ES</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>项目中设计模式的尝试与反馈</title>
-    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%B0%9D%E8%AF%95%E4%B8%8E%E5%8F%8D%E9%A6%88/</url>
-    <content><![CDATA[<p><mark>建设中</mark><br>与其说Java是面向对象的，不如说是在面向对象的语言中实现面向过程. 一个方法里成千上万行逻辑，if用的也是尤达表达式，很难不让人怀疑原先维护这个项目的人是不是写C语言的。</p>
-<p>其实就算是C语言的函数，也没有这样一个函数写到底的，大都是按功能进行拆分，那么在这个项目中</p>
-]]></content>
-      <categories>
-        <category>开发相关</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Coding</tag>
       </tags>
   </entry>
 </search>
