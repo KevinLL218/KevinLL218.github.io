@@ -66,6 +66,23 @@
       </tags>
   </entry>
   <entry>
+    <title>Jump Point Search 路径规划算法</title>
+    <url>/2023/09/01/Jump-Point-Search-%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="A"><a href="#A" class="headerlink" title="A*"></a>A*</h1><h1 id="Jump-Point-Search"><a href="#Jump-Point-Search" class="headerlink" title="Jump Point Search"></a>Jump Point Search</h1><blockquote>
+<p>JPS可以看作对A*的一个剪枝判断操作,只不过这个判断有些绕. 需要引入几个概念</p>
+</blockquote>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="强制邻居"><a href="#强制邻居" class="headerlink" title="强制邻居"></a>强制邻居</h3><p>如果不算斜角的话，一共有8种情况，举一个🌰: 当前点N，父节点P在左边，N的左上方有障碍物，上方是路，那么N的上方就是N的强迫邻居</p>
+<h3 id="跳点"><a href="#跳点" class="headerlink" title="跳点"></a>跳点</h3><h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2>]]></content>
+      <categories>
+        <category>游戏相关</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>GameDev</tag>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>N2成绩以及展望</title>
     <url>/2023/08/21/JLPT-N2%E6%88%90%E7%BB%A9%E4%BB%A5%E5%8F%8A%E5%B1%95%E6%9C%9B/</url>
     <content><![CDATA[<!-- TOC -->
@@ -151,29 +168,6 @@ class Demo &#123;
         <tag>Java</tag>
         <tag>Spring</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Jump Point Search 路径规划算法</title>
-    <url>/2023/09/01/Jump-Point-Search-%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<h1 id="A"><a href="#A" class="headerlink" title="A*"></a>A*</h1><h1 id="Jump-Point-Search"><a href="#Jump-Point-Search" class="headerlink" title="Jump Point Search"></a>Jump Point Search</h1><blockquote>
-<p>JPS可以看作对A*的一个剪枝判断操作,只不过这个判断有些绕. 需要引入几个概念</p>
-</blockquote>
-<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="强制邻居"><a href="#强制邻居" class="headerlink" title="强制邻居"></a>强制邻居</h3><p>如果不算斜角的话，一共有8种情况，举一个🌰: 当前点N，父节点P在左边，N的左上方有障碍物，上方是路，那么N的上方就是N的强迫邻居</p>
-<h3 id="跳点"><a href="#跳点" class="headerlink" title="跳点"></a>跳点</h3><h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2>]]></content>
-      <categories>
-        <category>游戏相关</category>
-        <category>开发</category>
-      </categories>
-      <tags>
-        <tag>GameDev</tag>
-        <tag>算法</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2013/12/24/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="http://zespia.tw/hexo">Hexo</a>! This is your very first post. Check <a href="http://zespia.tw/hexo/docs">documentation</a> to learn how to use.</p>
-]]></content>
   </entry>
   <entry>
     <title>MySQL应对上亿级别的数据的挑战</title>
@@ -271,29 +265,6 @@ class Demo &#123;
       <tags>
         <tag>Java</tag>
         <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一次git代码合并导致的问题</title>
-    <url>/2023/09/08/%E4%B8%80%E6%AC%A1git%E4%BB%A3%E7%A0%81%E5%90%88%E5%B9%B6%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<blockquote>
-<p>因为一次代码合并失误，导致线上事故，扣了绩效，引以为戒</p>
-</blockquote>
-<p>在一个月前某次发版的时候，使用cherry-pick不熟练，将别人的代码覆盖了，这一个月的时间造成了一些单子多生成了，产生了比较严重的后果，因此将其记录下来。</p>
-<p>对一个文件进行修改提交之后，另一个人在修改的基础上再次进行修改，然后等到正式上线的时候，最后修改的先发上去，那么问题来了，如果此时我提交第一次修改到master分支，会如何解决冲突？</p>
-<p>这就是这次事故的原因了。 cherry-pick的时候产生了冲突，在解决冲突的时候，使用第一版的代码覆盖了后续的代码。</p>
-<pre><code class="java">// change 1    -- committed by A 1:00
-// change 2    -- committed by B 2:00
-</code></pre>
-<p>如果此时先提交了B，后提交了A，会触发resolve conflict，此时代码是没有B提交，很容易将B代码覆盖，但是如果<strong>隔了几行</strong>，此时提交的顺序就可以改变了. <del>估计是检测了相邻的几行代码</del> </p>
-<p>现阶段对于git的应用还是拉取开发分支到本地，修改后直接提交推送到远程，架构部的推荐方式则是使用多个分支，如<code>hotfix</code>,<code>release</code>,<code>feature</code>等等，分别代表”紧急修补”,”正式”,”业务功能”等，但是由于老项目不支持本地启动，因此无法实现这个设想。</p>
-]]></content>
-      <categories>
-        <category>开发相关</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -513,6 +484,35 @@ class Demo &#123;
       </categories>
       <tags>
         <tag>生活</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2013/12/24/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="http://zespia.tw/hexo">Hexo</a>! This is your very first post. Check <a href="http://zespia.tw/hexo/docs">documentation</a> to learn how to use.</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>一次git代码合并导致的问题</title>
+    <url>/2023/09/08/%E4%B8%80%E6%AC%A1git%E4%BB%A3%E7%A0%81%E5%90%88%E5%B9%B6%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<blockquote>
+<p>因为一次代码合并失误，导致线上事故，扣了绩效，引以为戒</p>
+</blockquote>
+<p>在一个月前某次发版的时候，使用cherry-pick不熟练，将别人的代码覆盖了，这一个月的时间造成了一些单子多生成了，产生了比较严重的后果，因此将其记录下来。</p>
+<p>对一个文件进行修改提交之后，另一个人在修改的基础上再次进行修改，然后等到正式上线的时候，最后修改的先发上去，那么问题来了，如果此时我提交第一次修改到master分支，会如何解决冲突？</p>
+<p>这就是这次事故的原因了。 cherry-pick的时候产生了冲突，在解决冲突的时候，使用第一版的代码覆盖了后续的代码。</p>
+<pre><code class="java">// change 1    -- committed by A 1:00
+// change 2    -- committed by B 2:00
+</code></pre>
+<p>如果此时先提交了B，后提交了A，会触发resolve conflict，此时代码是没有B提交，很容易将B代码覆盖，但是如果<strong>隔了几行</strong>，此时提交的顺序就可以改变了. <del>估计是检测了相邻的几行代码</del> </p>
+<p>现阶段对于git的应用还是拉取开发分支到本地，修改后直接提交推送到远程，架构部的推荐方式则是使用多个分支，如<code>hotfix</code>,<code>release</code>,<code>feature</code>等等，分别代表”紧急修补”,”正式”,”业务功能”等，但是由于老项目不支持本地启动，因此无法实现这个设想。</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Git</tag>
       </tags>
   </entry>
   <entry>
@@ -888,20 +888,6 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
-    <title>项目中设计模式的尝试与反馈</title>
-    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%B0%9D%E8%AF%95%E4%B8%8E%E5%8F%8D%E9%A6%88/</url>
-    <content><![CDATA[<p><mark>建设中</mark><br>与其说Java是面向对象的，不如说是在面向对象的语言中实现面向过程. 一个方法里成千上万行逻辑，if用的也是尤达表达式，很难不让人怀疑原先维护这个项目的人是不是写C语言的。</p>
-<p>其实就算是C语言的函数，也没有这样一个函数写到底的，大都是按功能进行拆分，那么在这个项目中</p>
-]]></content>
-      <categories>
-        <category>开发相关</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Coding</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>项目中缓存中间件的应用及思考</title>
     <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/</url>
     <content><![CDATA[<p><mark>建设中</mark></p>
@@ -914,6 +900,20 @@ class Demo &#123;
       <tags>
         <tag>Java Redis</tag>
         <tag>缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>项目中设计模式的尝试与反馈</title>
+    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%B0%9D%E8%AF%95%E4%B8%8E%E5%8F%8D%E9%A6%88/</url>
+    <content><![CDATA[<p><mark>建设中</mark><br>与其说Java是面向对象的，不如说是在面向对象的语言中实现面向过程. 一个方法里成千上万行逻辑，if用的也是尤达表达式，很难不让人怀疑原先维护这个项目的人是不是写C语言的。</p>
+<p>其实就算是C语言的函数，也没有这样一个函数写到底的，大都是按功能进行拆分，那么在这个项目中</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Coding</tag>
       </tags>
   </entry>
 </search>
