@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>2d游戏引擎系列-01</title>
+    <url>/2023/09/02/2d%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E7%B3%BB%E5%88%97-01/</url>
+    <content><![CDATA[<h1 id="创建一个简单的世界"><a href="#创建一个简单的世界" class="headerlink" title="创建一个简单的世界"></a>创建一个简单的世界</h1><blockquote>
+<p>以下是一个简单的世界，其中平台是固定的，角色是可以移动</p>
+</blockquote>
+<pre><code class="java">class Demo &#123;
+    private OrthographicCamera camera; // 正交投影
+    private World world; // 世界
+    private Box2DDebugRenderer b2dr; // 渲染(debug
+    private Body player; // 角色
+    private Body platform; // 平台
+&#125;
+</code></pre>
+<h2 id="初始化流程"><a href="#初始化流程" class="headerlink" title="初始化流程"></a>初始化流程</h2><ol>
+<li>创建正交投影摄像机</li>
+<li>创建世界</li>
+<li>生成角色</li>
+<li>生成平台</li>
+</ol>
+<pre><code class="java">public class Game &#123;
+    void create() &#123;
+        camera.setToOrth(false, w / 2, h / 2 );
+        world = new World(new Vector2(0, -9.8f), false);
+        player = craetePlayer();
+        platform = createPlatform();
+    &#125;
+&#125;
+</code></pre>
+<h3 id="生成角色和平台"><a href="#生成角色和平台" class="headerlink" title="生成角色和平台"></a>生成角色和平台</h3><blockquote>
+<p>生成角色和平台都可以看作一样的流程</p>
+</blockquote>
+<ol>
+<li>生成BodyDef描述信息</li>
+<li>根据描述信息生成Body</li>
+</ol>
+<pre><code class="java">class Game &#123;
+    void createBody() &#123;
+        Body pBody;
+        // 定义
+        BodyDef def = new BodyDef();
+        def.type = BodyDef.BodyType.DynamicBody; // 活动的还是固定的
+        def.position.set(0,0);
+        def.fixedRotation = true;
+        pBody = world.createBody(def); // 从世界中创建的物体
+
+        // 形状
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(16 / PPM, 16 / PPM); // 半径
+
+        pBody.createFixture(shape, 1.0f);
+        shape.dispose();
+    &#125;
+&#125;
+</code></pre>
+<p>以上是一个简单的创建世界的过程.</p>
+]]></content>
+      <categories>
+        <category>游戏相关</category>
+      </categories>
+      <tags>
+        <tag>LibGdx</tag>
+        <tag>Box2d</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Controller中返回值的处理逻辑</title>
+    <url>/2023/09/07/Controller%E4%B8%AD%E8%BF%94%E5%9B%9E%E5%80%BC%E7%9A%84%E5%A4%84%E7%90%86%E9%80%BB%E8%BE%91/</url>
+    <content><![CDATA[<!-- TOC -->
+<ul>
+<li><a href="#responsebody-%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%A4%84%E7%90%86-">@ResponseBody 注解的处理</a></li>
+<li><a href="#contentnegotiationmanagerfactorybean">ContentNegotiationManagerFactoryBean</a></li>
+<li><a href="#responseentityt-%E7%B1%BB%E7%9A%84%E4%BD%BF%E7%94%A8">ResponseEntity&lt;T&gt; 类的使用</a></li>
+<li><a href="#requestmappinghandleradapter-">RequestMappingHandlerAdapter</a><!-- TOC --></li>
+</ul>
+<p>在一次开发文件上传下载的任务中，学习了Spring中<code>Resource</code>类的使用, 不是<code>@Resource</code>, 本地测试项目是可以正常下载的，但是代码提交上去后发现返回的始终都是序列化的对象,而不是具体的文件, 通过对Spring返回值的学习和进一步追踪才找到问题所在。</p>
+<h1 id="ResponseBody-注解的处理"><a href="#ResponseBody-注解的处理" class="headerlink" title="@ResponseBody 注解的处理"></a>@ResponseBody 注解的处理</h1><blockquote>
+<p><code>@ResponseBody</code>注解顾名思义，就是将Controller的返回值经过处理写入到 <code>Response</code>中的<code>Body</code>字段上.具体处理方式则是通过各种<code>Converter</code>的实现类结合<code>MediaType</code> 去处理转换。  </p>
+</blockquote>
+<p> 虽然不知道谁控制着<code>Controller</code>注解，但是可以知道<code>@ResponseBody</code>注解是由<code>RequestResponseBodyMethodProcessor</code> 方法去处理的，该类同时还会处理方法参数中的<code>@RequestBody</code>注解,同样的，参数的读取也是通过”MessageConverter”来实现.</p>
+<p>因此，理论上也是可以通过修改Converter来控制返回值的类型的。而这个脑瘫项目就是这么处理的，将所有的返回类型都一刀切,全部都是json返回类型。</p>
+<h1 id="ContentNegotiationManagerFactoryBean"><a href="#ContentNegotiationManagerFactoryBean" class="headerlink" title="ContentNegotiationManagerFactoryBean"></a>ContentNegotiationManagerFactoryBean</h1><p>内容协商管理器工厂，就是控制入参和出参格式的类。这个工厂类是通过配置文件生成一个协商管理器，供Spring容器使用。可以通过配置文件配置支持的媒体类型和默认类型，而这个脑瘫项目就是只配置了json，默认也是<code>application/json</code>, 所以所有的返回值都以json字符串格式进行处理.  </p>
+<p>值得注意的是，该类本身是由工厂模式实现，而构建协商管理器的过程则是策略模式。最终的协商过程也是策略模式。</p>
+<h1 id="ResponseEntity-类的使用"><a href="#ResponseEntity-类的使用" class="headerlink" title="ResponseEntity&lt;T&gt; 类的使用"></a>ResponseEntity&lt;T&gt; 类的使用</h1><p>由于内容协商的修改，所以在本项目中,ResponseEntity已经失去了他的作用。  </p>
+<p>传统的MVC对于下载的处理方式是比较臃肿的，需要打开<code>HttpServletResponse</code>的输出流，设置响应头属性，和MIME属性，而这些操作既然都是一样的，那么<code>dont&#39;t repeat yourself</code> , 这也是该类的使用场景。<br>对于文件流，可以直接作为返回值，由内容协商管理器自动进行判断实现文件下载。</p>
+<pre><code class="java">@RestController
+class Demo &#123;
+    @GetMapping(&quot;file&quot;)
+    public ResponseEntity&lt;Resource&gt; download() &#123;
+        return new ResponseEntity&lt;&gt;(resource, HttpStatus.OK);
+    &#125;
+&#125;
+</code></pre>
+<p>还是由于项目中，修改了内容协商管理器，导致所有返回类型都是json，所以即使是文件流，其返回到前端依旧是json格式.</p>
+<h1 id="RequestMappingHandlerAdapter"><a href="#RequestMappingHandlerAdapter" class="headerlink" title="RequestMappingHandlerAdapter"></a>RequestMappingHandlerAdapter</h1><p>通过查阅资料及翻阅源码，大概知道了为什么自定义了<code>MessageConverter</code>导致ResponseEntity失效了。<br>顾名思义,<code>RequestMappingHandlerAdapter</code>就是处理<code>@RequestMapping</code>的类，接着会发现在这个类中有个字段是 <code>HandlerMethodReturnValueHandlerComposite</code>, 这是一个组合模式的实现类，处理方法返回值，通过debug得知运行时自动添加返回值处理策略，这些策略或者以<code>Handler</code>结尾，或者以<code>Processor</code>结尾，最终都会添加到这个组合类中,运行时根据返回值的类型进行动态地处理，比如以<code>ResponseEntity</code>作为返回值，会由<code>HttpEntityMethodProcessor</code>类进行处理。<br>程序到了这里， <code>ResponseEntity</code>还是能够正常处理的，但是当真正写结果的时候，发现是通过其父类的方法实现，而父类的方法则是上文所述的<code>MediaType</code>及其<code>HttpMessageConverter</code>实现类，原本根据不同的<code>MediaType</code>使用对应的<code>Converter</code>，此时由于只定义了<code>json</code>格式，其他格式也都默认为json，以至于最终的所有返回结果都是<code>JSONString</code>了。</p>
+<p>所以说，这个💩山项目自作聪明的方法，断绝了后续开发的扩展性，除非将其大改，否则就是💩上雕花。</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>N2成绩以及展望</title>
+    <url>/2023/08/21/JLPT-N2%E6%88%90%E7%BB%A9%E4%BB%A5%E5%8F%8A%E5%B1%95%E6%9C%9B/</url>
+    <content><![CDATA[<!-- TOC -->
+<ul>
+<li><a href="#%E6%88%90%E7%BB%A9">成绩</a><ul>
+<li><a href="#%E5%A5%91%E6%9C%BA">契机</a></li>
+<li><a href="#%E5%9F%BA%E7%A1%80">基础</a></li>
+<li><a href="#%E6%AD%A3%E5%BC%8F%E5%8F%82%E5%8A%A0">正式参加</a></li>
+<li><a href="#%E8%AE%A1%E5%88%92">计划</a><!-- TOC --></li>
+</ul>
+</li>
+</ul>
+<h1 id="成绩"><a href="#成绩" class="headerlink" title="成绩"></a>成绩</h1><table>
+<thead>
+<tr>
+<th align="center">言语</th>
+<th align="center">读解</th>
+<th align="center">听解</th>
+<th align="center">总分</th>
+<th align="center">词汇</th>
+<th align="center">语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">45</td>
+<td align="center">44</td>
+<td align="center">49</td>
+<td align="center">138</td>
+<td align="center">A</td>
+<td align="center">A</td>
+</tr>
+</tbody></table>
+<h2 id="契机"><a href="#契机" class="headerlink" title="契机"></a>契机</h2><p><font size='5'>从</font>五月开始，或者是从年后回来开始复习，准备考N2，想起来当初学日语时，还是初中，空耳假面骑士的中二台词，后来才正式断断续续的自学之路，和网上的方法一样，通过『标准日本语』这本教材开始学习，也幸好自己英语成绩还不错，利用英语课的时间继续学习日语。 </p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p><font size='5'>高中</font>的时间非常紧张，两周休息一天半，就在这里挤时间学习，终于在高三前学完了初级上下册。听说这个教材有各种问题，但是也算是打下了一个基础了。到了大学时其实基本上已经忘记了。直到大二选修了日语专业的两门课，『日本传统文化』和『日语泛读』，两门都是外教的课，想到日语几乎零基础了，就利用暑假复习了几周，仓促开学😂。  </p>
+<p><font size='5'>惊讶</font>的是，日专大二应该是到了N2的水平了，但是和他们一起上课的时候感觉不到差异，或者说有一些语法知识比他们还要熟悉，最大的差异就是口语了，非专业的没有接受过口语训练，所以即使都能听懂，但是却说不出来。可惜的是，当时有N2考试，但是因为没法从生活费中抽出550元而没有报名。随后就是三年的疫情，就没有后续了。  </p>
+<h2 id="正式参加"><a href="#正式参加" class="headerlink" title="正式参加"></a>正式参加</h2><p><font size='5'>工作</font>之后，因为个人性格问题(如果闲太久反而会恐慌),所以就重拾了日语学习，再加上有工资了，就报考了7月份的N2.不得不说，JLPT真和抢票一样，一不注意就抢不到了。好在最后有惊无险，选到了海大的考点。至此才是真正的开始。也是从这个时候做决定，要去日本生活。此时应该是四月份左右了。到7月2号正式考试，倒是没有遇到很难的问题，可能是有一些基础吧。  </p>
+<h2 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h2><p><font size='5'>N1</font>, 正在准备今年12月份的N1考试。希望能在年前拿到N1证书，这样也是比较有底气。不然只是N2，还是有些不够.</p>
+]]></content>
+      <categories>
+        <category>日常生活</category>
+      </categories>
+      <tags>
+        <tag>日语</tag>
+        <tag>生活</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jump Point Search 路径规划算法</title>
+    <url>/2023/09/01/Jump-Point-Search-%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<h1 id="A"><a href="#A" class="headerlink" title="A*"></a>A*</h1><h1 id="Jump-Point-Search"><a href="#Jump-Point-Search" class="headerlink" title="Jump Point Search"></a>Jump Point Search</h1><blockquote>
+<p>JPS可以看作对A*的一个剪枝判断操作,只不过这个判断有些绕. 需要引入几个概念</p>
+</blockquote>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="强制邻居"><a href="#强制邻居" class="headerlink" title="强制邻居"></a>强制邻居</h3><p>如果不算斜角的话，一共有8种情况，举一个🌰: 当前点N，父节点P在左边，N的左上方有障碍物，上方是路，那么N的上方就是N的强迫邻居</p>
+<h3 id="跳点"><a href="#跳点" class="headerlink" title="跳点"></a>跳点</h3><h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2>]]></content>
+      <categories>
+        <category>游戏相关</category>
+        <category>开发</category>
+      </categories>
+      <tags>
+        <tag>GameDev</tag>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MySQL应对上亿级别的数据的挑战</title>
+    <url>/2023/09/08/MySQL%E5%BA%94%E5%AF%B9%E4%B8%8A%E4%BA%BF%E7%BA%A7%E5%88%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8C%91%E6%88%98/</url>
+    <content><![CDATA[<p><mark>建设中</mark></p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+        <category>中间件</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2013/12/24/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="http://zespia.tw/hexo">Hexo</a>! This is your very first post. Check <a href="http://zespia.tw/hexo/docs">documentation</a> to learn how to use.</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>java动态代理</title>
+    <url>/2023/08/31/java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/</url>
+    <content><![CDATA[<!-- TOC -->
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80-">前言</a></li>
+<li><a href="#%E4%BA%8B%E5%8A%A1">事务</a></li>
+<li><a href="#%E5%A4%B1%E6%95%88">失效</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86">动态代理</a><ul>
+<li><a href="#spring-aop-%E5%92%8C-aspectj">Spring AOP 和 AspectJ</a><ul>
+<li><a href="#aspectj">AspectJ</a></li>
+<li><a href="#spring-aop">Spring AOP</a></li>
+</ul>
+</li>
+<li><a href="#jdk-proxy-%E5%92%8C-cglib">JDK Proxy 和 Cglib</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a><!-- TOC --></li>
+</ul>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>某个同事写了逆天代码，大概情况如下</p>
+<pre><code class="java">interface Demo &#123;
+    String selectByConditionSharding(String name);
+&#125;
+</code></pre>
+<p>逆天在哪呢，根据条件查，但是条件是固定的，名字带分片，实际一点关系都没有. 为别人阅读代码提供困难，这是个人代码习惯的问题了，不再赘述.</p>
+<p>但是在后面的代码中，看到这两行让我有所沉思</p>
+<pre><code class="java">class Demo &#123;
+    @Autowired
+    ApplicationContext context;
+
+    public void doSth() &#123;
+        Object bean = context.getBean(&quot;BeanName&quot;);
+        bean.doSomeThing();
+    &#125;
+&#125;
+</code></pre>
+<p>看的出来,他考虑到了<strong>事务失效</strong>的情况,但是这让我陷入思考:  </p>
+<ol>
+<li>哪些情况下事务会失效</li>
+<li>同一个类中<code>this</code>调用一定会失效吗 (不一定)</li>
+<li>Spring AOP 和 AspectJ 和 cglib到底怎么回事</li>
+</ol>
+<p>带着以上问题，我去谷歌一下，最终整理了一下.</p>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><h1 id="失效场景"><a href="#失效场景" class="headerlink" title="失效场景"></a>失效场景</h1><p>常见的几种场景简介,不细说，网上一搜一大堆:</p>
+<ol>
+<li>没有指定且抛出受检异常(所有非<code>RuntimeException</code>) – 配置<code>rollBackFor</code>属性</li>
+<li>异常被内部catch了，没有抛出.   – 最好使用编程式事务<code>transactionTemplate.execute()</code></li>
+<li>同一个类中的方法调用 – 使用AspectJ作为代理方式</li>
+<li>使用了final或static关键字 – 去掉</li>
+<li>修饰符为非public – 改为public</li>
+<li>传播方式设置不对 – 最好默认设置为<code>requied</code></li>
+<li>没有被spring管理，只有bean才能被管理</li>
+<li>多线程… 使用分布式事务吧</li>
+</ol>
+<h1 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h1><h2 id="Spring-AOP-和-AspectJ"><a href="#Spring-AOP-和-AspectJ" class="headerlink" title="Spring AOP 和 AspectJ"></a>Spring AOP 和 AspectJ</h2><blockquote>
+<p>这两个东西常常放在一起说明，实际上是两个截然不同的东西。</p>
+</blockquote>
+<p>现在常用的Spring AOP实际上<strong>借用了</strong>AspectJ的一些注解.致使我认为SpringAOP和AspectJ是同一个东西, 在Spring配置中开启<code>&lt;aop:aspectj-autoproxy/&gt;</code>即可识别AspectJ的一些注解</p>
+<h3 id="AspectJ"><a href="#AspectJ" class="headerlink" title="AspectJ"></a>AspectJ</h3><blockquote>
+<p>AspectJ其实(在某些意义下)应该和Lombok并列的存在，某种程度独立于JVM，在编译期间就对类进行织入，实际上运行时已经是被代理的类了。也就是说使用AspectJ代理的类，在加载时就不是它自己了。</p>
+</blockquote>
+<p>因为它是在{编译期间, 编译之后, 加载前}进行织入，所以运行期间就没有它什么事了。</p>
+<h3 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h3><blockquote>
+<p>SpringAOP则是对AOP概念在Spring架构下的一种实现，只在Spring容器中才能实现，无法脱离容器，而且也是在运行期间进行代理。</p>
+</blockquote>
+<p>由于SpringAOP是运行期间进行动态代理的，所以在同一个类中调用自己的方法，是不会被代理，所以使用<code>@Transactional</code>主键的类事务就失效了.</p>
+<p>如果让类内调用保留事务，则必须使用AspectJ来实现动态代理。可以在配置中切换为AspectJ代理</p>
+<pre><code class="xml">&lt;tx:annotation-driven  mode=&quot;aspectj&quot;/&gt;
+</code></pre>
+<h2 id="JDK-Proxy-和-Cglib"><a href="#JDK-Proxy-和-Cglib" class="headerlink" title="JDK Proxy 和 Cglib"></a>JDK Proxy 和 Cglib</h2><blockquote>
+<p>动态代理有两种实现方式，一种是JDK原生的方法，另一种则是使用字节码技术。</p>
+</blockquote>
+<p>JDK原生方法实际上就是通过代码实现<code>代理模式</code>, 具体实现方式网上有很多了。总之就是必须要实现接口，编写代码。<br>而使用Cglib则比原生JDK方式更自由，不需要显式实现接口，而是在编译期对源代码进行改写。</p>
+<p>都不能对final修饰的类和方法进行代理。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在同一个类中调用不一定会使事务失效，需要非原生jdk的动态代理方式才能实现，SpringAOP使用了jdk原生的动态代理实现方式，因此不能处理同一个类中的方法调用问题。</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>一次git代码合并导致的问题</title>
+    <url>/2023/09/08/%E4%B8%80%E6%AC%A1git%E4%BB%A3%E7%A0%81%E5%90%88%E5%B9%B6%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<blockquote>
+<p>因为一次代码合并失误，导致线上事故，扣了绩效，引以为戒</p>
+</blockquote>
+<p>在一个月前某次发版的时候，使用cherry-pick不熟练，将别人的代码覆盖了，这一个月的时间造成了一些单子多生成了，产生了比较严重的后果，因此将其记录下来。</p>
+<p>对一个文件进行修改提交之后，另一个人在修改的基础上再次进行修改，然后等到正式上线的时候，最后修改的先发上去，那么问题来了，如果此时我提交第一次修改到master分支，会如何解决冲突？</p>
+<p>这就是这次事故的原因了。 cherry-pick的时候产生了冲突，在解决冲突的时候，使用第一版的代码覆盖了后续的代码。</p>
+<pre><code class="java">// change 1    -- committed by A 1:00
+// change 2    -- committed by B 2:00
+</code></pre>
+<p>如果此时先提交了B，后提交了A，会触发resolve conflict，此时代码是没有B提交，很容易将B代码覆盖，但是如果<strong>隔了几行</strong>，此时提交的顺序就可以改变了. <del>估计是检测了相邻的几行代码</del> </p>
+<p>现阶段对于git的应用还是拉取开发分支到本地，修改后直接提交推送到远程，架构部的推荐方式则是使用多个分支，如<code>hotfix</code>,<code>release</code>,<code>feature</code>等等，分别代表”紧急修补”,”正式”,”业务功能”等，但是由于老项目不支持本地启动，因此无法实现这个设想。</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>回顾过去，展望未来</title>
+    <url>/2023/12/09/%E5%9B%9E%E9%A1%BE%E8%BF%87%E5%8E%BB%EF%BC%8C%E5%B1%95%E6%9C%9B%E6%9C%AA%E6%9D%A5/</url>
+    <content><![CDATA[<p>不知不觉来到日本已经两周了，一周的时间准备，一周的时间上班，在这里遇到了新的朋友，也去了很多地方。可能是来的时间比较短吧，还是有种不真实感。心里比较烦躁，可是具体又是什么原因一时也说不上来。<br>「心が落ち着かない」也可能是「居安思危」吧。毕竟这种人生不能自由掌控的状态真的会让自己不能安心。<br>既然已经放弃国内生活来到日本，必然要整理一下当前的所有情况，再制定下一步的计划。</p>
+<h1 id="当前的情况分析"><a href="#当前的情况分析" class="headerlink" title="当前的情况分析"></a>当前的情况分析</h1><ul>
+<li>到目前为止，宿舍是明年2月底到期  </li>
+<li>工作在秋叶原站附近的大楼，项目至少持续一年</li>
+<li>身上积蓄20w日元左右，月底发当月工资，到第二个月底开始找房子，大约能有40w积蓄，租房子是足够了</li>
+<li>工作经验只有1.5年，Java相关，没有任何证书</li>
+<li>日语只有N2，有N2证书，日常交流也挺勉强的</li>
+<li>英语日常交流，只有6级，没有认可度</li>
+<li>工作朝九晚六，双休，很少加班，基本晚上6点下班，那么晚上的时间可以利用</li>
+</ul>
+<h1 id="未来的计划和安排"><a href="#未来的计划和安排" class="headerlink" title="未来的计划和安排"></a>未来的计划和安排</h1><blockquote>
+<p>根据个人的看法排出的一些事项，如果按照签证的日期来算的话，计划粗略估计要安排未来5年的 2028年</p>
+</blockquote>
+<p>重要度来说：</p>
+<ol>
+<li>日语，提高日语水平 （N1）<ol>
+<li>日常口语需要提高</li>
+<li>参加当地的日语交流活动提高日语</li>
+<li>N1的证书一定要拿到，在此期间可以复习语法和单词，即使企业不怎么看重，但这也是日语学习的证明</li>
+<li>按照CERF标准学习到C1是最终目标</li>
+</ol>
+</li>
+<li>技术方面<ol>
+<li>Oracle Java I&amp;II 两个证明 （有效期3年）</li>
+<li>IT support （两周内拿到）</li>
+<li>AWS 证书 <ol>
+<li>一共有12个证书，先从简单的开始</li>
+</ol>
+</li>
+<li>Oracle MySQL 1Z0-908 （有效期3年）</li>
+<li>Oracle 数据库认证 （优先级往后</li>
+</ol>
+</li>
+<li>英语，生活中相对重要<ol>
+<li>BEC初级</li>
+<li>BEC中级</li>
+<li>托福 100+ &amp; IELTS 7.5</li>
+<li>按照CEFR标准到达C1是最终目标</li>
+</ol>
+</li>
+<li>工作<ol>
+<li>目前的工作，3年时间，积累经验 （2.5年后开始准备）</li>
+<li>大手外资，英语为主</li>
+<li>大手日企，日语为主</li>
+<li>普通外资，普通日企</li>
+<li>前往德国工作，但是需要时间学习德语</li>
+</ol>
+</li>
+</ol>
+<p>于是，根据以上安排了接下来的任务</p>
+<table>
+<thead>
+<tr>
+<th>任务</th>
+<th>年</th>
+<th>月</th>
+<th>准备</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IT SUPPORT</td>
+<td>2023</td>
+<td>12</td>
+<td>三周</td>
+<td>学习最基本的知识</td>
+</tr>
+<tr>
+<td>Oracle Java I</td>
+<td>2024</td>
+<td>1</td>
+<td>两周</td>
+<td>最初级的证明</td>
+</tr>
+<tr>
+<td>找房子</td>
+<td>2024</td>
+<td>2</td>
+<td>三周</td>
+<td>在神奈川附近不错</td>
+</tr>
+<tr>
+<td>报名JLPT N1</td>
+<td>2024</td>
+<td>3</td>
+<td>一周</td>
+<td>准备N1</td>
+</tr>
+<tr>
+<td>日语CERF</td>
+<td>2024</td>
+<td>6</td>
+<td>三个月</td>
+<td>目标B2 (即N1)</td>
+</tr>
+<tr>
+<td>开始攻克AWS</td>
+<td>2024</td>
+<td>7</td>
+<td>三周</td>
+<td>拿到最基本的证书</td>
+</tr>
+<tr>
+<td>BEC初级</td>
+<td>2024</td>
+<td>8</td>
+<td>四周</td>
+<td>一个月时间准备</td>
+</tr>
+<tr>
+<td>Oracle Java II</td>
+<td>2024</td>
+<td>9</td>
+<td>四周</td>
+<td>高级证明</td>
+</tr>
+<tr>
+<td>BEC中级</td>
+<td>2024</td>
+<td>11</td>
+<td>两个月</td>
+<td>商务英语水平，之后就是维持水平即可</td>
+</tr>
+<tr>
+<td>工作满一年</td>
+<td>2024</td>
+<td>12</td>
+<td>0</td>
+<td>正式在日本待满1年</td>
+</tr>
+<tr>
+<td>Oracle MySQL 1Z0-908</td>
+<td>2025</td>
+<td>1</td>
+<td>两个月</td>
+<td>MySQL的最高级证书</td>
+</tr>
+<tr>
+<td>AWS证书</td>
+<td>2025</td>
+<td>3</td>
+<td>两个月</td>
+<td>目标是拿到一半的证书</td>
+</tr>
+<tr>
+<td>IELTS</td>
+<td>2025</td>
+<td>4</td>
+<td>一个月</td>
+<td>有BEC中级的基础，可以尝试雅思</td>
+</tr>
+<tr>
+<td>开始学习Oracle证书相关</td>
+<td>2025</td>
+<td>6</td>
+<td>两个月</td>
+<td>目标拿到证书，根据学习情况安排</td>
+</tr>
+<tr>
+<td>日语CERF</td>
+<td>2025</td>
+<td>10</td>
+<td>四个月</td>
+<td>这段时间不断提高日语水平，争取达到C1</td>
+</tr>
+<tr>
+<td>托福</td>
+<td>2025</td>
+<td>12</td>
+<td>两个月</td>
+<td>首次尝试托福100+</td>
+</tr>
+<tr>
+<td>工作满二年</td>
+<td>2025</td>
+<td>12</td>
+<td>0</td>
+<td>正式在日本待满2年</td>
+</tr>
+<tr>
+<td>准备找工作</td>
+<td>2025</td>
+<td>3</td>
+<td>3个月</td>
+<td>过年后就开始准备，工作两年，可以有20天的带薪休假</td>
+</tr>
+<tr>
+<td>根据找工作的情况安排下一步计划</td>
+<td>2025</td>
+<td>4</td>
+<td>1个月</td>
+<td>这段时间看看情况，此时应该正好是2.5年</td>
+</tr>
+<tr>
+<td>开始学习德语</td>
+<td>2025</td>
+<td>12</td>
+<td>8个月</td>
+<td>德语到入门的程度即可，此时一定要保证英语是C1</td>
+</tr>
+</tbody></table>
+<ol>
+<li>日语</li>
+<li>IT SUPPORT</li>
+<li>技术</li>
+<li>英语</li>
+<li>工作</li>
+</ol>
+]]></content>
+      <categories>
+        <category>日常生活</category>
+      </categories>
+      <tags>
+        <tag>生活</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>日语学习记录(持续更新)</title>
+    <url>/2023/09/02/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>风乍起，合当奋意向人生</p>
+</blockquote>
+<p><a href="https://imgur.com/tANbyQ2"><img src="https://i.imgur.com/tANbyQ2.gif" title="source: imgur.com" /></a></p>
+<!-- TOC -->
+<ul>
+<li><a href="#2023%E5%B9%B412%E6%9C%88">2023年12月</a></li>
+<li><a href="#2023%E5%B9%B411%E6%9C%88">2023年11月</a></li>
+<li><a href="#2023%E5%B9%B410%E6%9C%88">2023年10月</a></li>
+<li><a href="#2023%E5%B9%B49%E6%9C%88">2023年9月</a><!-- TOC --></li>
+</ul>
+<p>N1考试时间: <code>2023年12月2日</code>  EXPIRED</p>
+<p>最后更新: <code>2023年12月9日</code></p>
+<h1 id="2023年12月"><a href="#2023年12月" class="headerlink" title="2023年12月"></a>2023年12月</h1><table>
+<thead>
+<tr>
+<th>DAY</th>
+<th>EVENT</th>
+<th>REMARK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1日</td>
+<td>到公司研修</td>
+<td>给了一大堆材料，和一本书差不多厚，一起来的还有6人，4名中国人，2名日本人</td>
+</tr>
+<tr>
+<td>4日</td>
+<td>第二天研修</td>
+<td>1号是周五，参加了晚上的公司年会就放假了，今天差不多就把入职的流程都走完了</td>
+</tr>
+<tr>
+<td>5日</td>
+<td>分配项目组</td>
+<td>从今天起正式开始参与工作了</td>
+</tr>
+<tr>
+<td>8日</td>
+<td>着手开发环境</td>
+<td>在座位上待了3天终于拿到电脑开始着手工作了</td>
+</tr>
+<tr>
+<td>9日</td>
+<td>拾起日语教材</td>
+<td>NONE</td>
+</tr>
+</tbody></table>
+<h1 id="2023年11月"><a href="#2023年11月" class="headerlink" title="2023年11月"></a>2023年11月</h1><blockquote>
+<p>这个月主要的工作就是交接，离职手续以及等待签证</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>DAY</th>
+<th>EVENT</th>
+<th>REMARK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>9日</td>
+<td>下午去了签证代办处</td>
+<td>准备办理签证了</td>
+</tr>
+<tr>
+<td>10日</td>
+<td>上午去海边散步<br/>下午收到大使馆电话调查</td>
+<td>也许从此刻起，心态已经开始改变了吧</td>
+</tr>
+<tr>
+<td>12日</td>
+<td>发工资</td>
+<td>意料之中，毕竟请了很多天假呢</td>
+</tr>
+<tr>
+<td>15日</td>
+<td>正式完成工作交接，离开原公司</td>
+<td>想说的话很多</td>
+</tr>
+<tr>
+<td>16日</td>
+<td>获得签证</td>
+<td>很奇妙的感觉，中午睡觉被广告电话吵醒，心情烦躁刚挂断又来了个电话，告知我签证到了</td>
+</tr>
+<tr>
+<td>17日</td>
+<td>前往济南</td>
+<td>想在离开前见一下朋友</td>
+</tr>
+<tr>
+<td>20日</td>
+<td>到达武汉</td>
+<td>机场中转，倒是遇到了廉价酒店骗局，从村子里一下车就决定立马回去</td>
+</tr>
+<tr>
+<td>21日</td>
+<td>到达杭州</td>
+<td>去看望在浙大读研的朋友，顺便在杭州逛逛</td>
+</tr>
+<tr>
+<td>26日</td>
+<td>到达上海</td>
+<td>打算在机场过一晚上</td>
+</tr>
+<tr>
+<td>27日</td>
+<td>飞机延误三小时，到达成田机场，晚上到达宿舍</td>
+<td>靠窗的座位，第一次看到茫茫大海，交流后得知旁边的女孩是到日本考N1的，也是独自来日本，最后在机场告别，各自奔赴前程</td>
+</tr>
+<tr>
+<td>28日</td>
+<td>今天去了区役所登记住所</td>
+<td>第一次日语实战，磕磕巴巴，听得也云里雾里，体会到了日语不行的痛苦</td>
+</tr>
+<tr>
+<td>29日</td>
+<td>去了秋叶原电器街，又去了ario北砂</td>
+<td>自己一个人办了电话卡，好在店员小哥能听懂我说的日语</td>
+</tr>
+<tr>
+<td>30日</td>
+<td>入职的准备</td>
+<td>今天一天只是去周围转了转，熟悉了环境</td>
+</tr>
+</tbody></table>
+<h1 id="2023年10月"><a href="#2023年10月" class="headerlink" title="2023年10月"></a>2023年10月</h1><table>
+<thead>
+<tr>
+<th>DAY</th>
+<th>EVENT</th>
+<th>REMARK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>12日</td>
+<td>今天开始请两天假，认真准备第一场日语面试</td>
+<td>今天投递简历后，收到了第一份面试邀约，同时还参加了 fast offer的项目，最后拿到了两家公司的面试机会。</td>
+</tr>
+<tr>
+<td>16日</td>
+<td>上午面试，下午拿到OFFER<br/>开始准备赴日材料</td>
+<td>上午参加公司面试，感觉不错，然后下午的时候就收到了offer，地点东京秋叶原区。约定12月1日入社。提前一周赴日暂时住公司宿舍。</td>
+</tr>
+<tr>
+<td>17日</td>
+<td>上午办护照<br/>返校去取了N2证书</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>18日</td>
+<td>审批中</td>
+<td>效率很快，护照审批下午就下来了，预计这周五会送到,之后就是申请在留和签证了</td>
+</tr>
+</tbody></table>
+<h1 id="2023年9月"><a href="#2023年9月" class="headerlink" title="2023年9月"></a>2023年9月</h1><table>
+<thead>
+<tr>
+<th>DAY</th>
+<th>EVENT</th>
+<th>REMARK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2日</td>
+<td>1. N1语法 5&#x2F;20 <br/> 2. 单词 310</td>
+<td>N1语法主要从《蓝宝书》中学习</td>
+</tr>
+<tr>
+<td>3日</td>
+<td>1. N1语法 6&#x2F;20 <br/> 2. 单词 360</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>4日</td>
+<td>1. N1语法 7&#x2F;20 <br/> 2. 单词 410</td>
+<td>6号之前学完语法的目标失败，延长两周时间</td>
+</tr>
+<tr>
+<td>5日</td>
+<td>1. N1语法 8&#x2F;20 <br/> 2. 单词 460</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>8日</td>
+<td>1. N1语法 12&#x2F;20 <br/> 2. 单词 610</td>
+<td>可能是之前学习N2的时候，，教材超纲了，提前学习了很多N1的语法</td>
+</tr>
+<tr>
+<td>13日</td>
+<td>1. N1语法 20&#x2F;20 <br/> 2. 单词 840</td>
+<td>这几天一口气学完所有语法，接下来就是背熟语法，复习N2语法</td>
+</tr>
+<tr>
+<td>15日</td>
+<td>1. 复习语法 <br/> 2. 单词 940</td>
+<td>NONE</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>日常生活</category>
+      </categories>
+      <tags>
+        <tag>日语</tag>
+        <tag>生活</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>游戏AI初探</title>
+    <url>/2023/08/30/%E6%B8%B8%E6%88%8FAI%E5%88%9D%E6%8E%A2/</url>
+    <content><![CDATA[<h1 id="randomness"><a href="#randomness" class="headerlink" title="randomness"></a>randomness</h1><h2 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h2><p>用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。</p>
+<ul>
+<li>Average or max speed </li>
+<li>Average or max acceleration </li>
+<li>Size, width, height, or mass</li>
+<li>Visual or physical reaction time </li>
+<li>Fire or reload rate for firing </li>
+<li>Refresh rate or cool-down rate for healing or special abilities </li>
+<li>Chance of missing or striking a critical hit</li>
+</ul>
+<h2 id="随机数过滤"><a href="#随机数过滤" class="headerlink" title="随机数过滤"></a>随机数过滤</h2><p>为了留住玩家，可以通过对随机数进行过滤，来让玩家或对手获得优势</p>
+<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><p>最后，柏林噪声不仅仅是图像领域，1D柏林噪声可以用于平滑过渡动作，动画，和许多其他的行为。</p>
+<ul>
+<li>Movement (direction, speed, acceleration) </li>
+<li>Layered onto animation (adding noise to facial movement or gaze [Perlin 97]) </li>
+<li>Accuracy (winning or losing streaks, being in the groove, luck, or success) </li>
+<li>Attention (guard alertness, response time) • Play style (defensive, offensive) </li>
+<li>Mood (calm, angry, happy, sad, depressed, manic, bored, engaged)</li>
+</ul>
+<h1 id="FSM"><a href="#FSM" class="headerlink" title="FSM"></a>FSM</h1><pre><code class="java">public abstract class FSMTransition &#123;
+    // 判断当前转换是否成立，如果为真，有条路从当前状态走到目标状态
+    abstract boolean isValid();
+    // 得到状态转换的最终状态
+    abstract FSMachine getNextState();
+    // 发生在原状态和目标状态中间的事
+    abstract void onTransition();
+&#125;
+</code></pre>
+<pre><code class="java">public abstract static class FSMachine &#123;
+    // 进入状态
+    abstract void onEnter();
+    // 每tick更新
+    abstract void onUpdate();
+    // 离开状态
+    abstract void onExit();
+    // 可选的状态转换路线
+    List&lt;FSMTransition&gt; transitions = new ArrayList&lt;&gt;();
+&#125;
+</code></pre>
+<pre><code class="java">public static class FiniteStateMachine &#123;
+    // 主要更新方法
+    void update()&#123;
+        // 判断当前状态的所有可能转换路线
+        for (FSMTransition transition : activeState.transitions) &#123;
+            if (transition.isValid()) &#123; // 如果可以选择该路线
+                activeState.onExit(); 
+                activeState = transition.getNextState();
+                transition.onTransition();
+                activeState.onEnter();
+                break;
+            &#125;
+        &#125;
+        // 更新状态
+        activeState.onUpdate();
+    &#125;;
+    // 状态机所持有的所有状态
+    List&lt;FSMachine&gt; states;
+    // 初始状态
+    FSMachine initState;
+    // 当前状态
+    FSMachine activeState;
+&#125;
+</code></pre>
+<p>需要注意的是，具体的逻辑在<code>onExit(), onUpdate(), onExit(), onTransition()</code>这四个方法中实现，其中，<code>onTransition()</code>方法应与具体AI逻辑无关，如日志记录，全局事件等.</p>
+<h2 id="Hierarchical-FSM"><a href="#Hierarchical-FSM" class="headerlink" title="Hierarchical FSM"></a>Hierarchical FSM</h2><p>当开发到晚期时，状态会几十上百个，增加新状态时会很复杂且容易出错。</p>
+<blockquote>
+<p>在HFSM中，每个单独的状态都是一个状态机。可以使整个状态机分离到单独的多个状态机中.</p>
+</blockquote>
+<h2 id="Behavior-Trees"><a href="#Behavior-Trees" class="headerlink" title="Behavior Trees"></a>Behavior Trees</h2><p>a example:</p>
+<pre><code class="java">public abstract static class Behavior &#123;
+    abstract void onInit(); // 初次进入
+    abstract State update(); // 更新状态
+    abstract void onTerminate(State); // 离开
+&#125;
+</code></pre>
+<p>行为树的实现可以通过<code>装饰器</code>或<code>组合</code>模式去实现。</p>
+<p>新的行为树可以多个实体共享，使用DSL，用于多种逻辑.</p>
+<h2 id="Utility-Systems"><a href="#Utility-Systems" class="headerlink" title="Utility Systems"></a>Utility Systems</h2><p>效用系统，用于处理非布尔值信息。比起饿了吃饭，效用系统计算了多饿，多重等非01信息。通过多种因素计算出一个分数，或者加上一个随机值，根据最终的值进行选择。</p>
+<h2 id="Goal-Oriented-Action-Planners"><a href="#Goal-Oriented-Action-Planners" class="headerlink" title="Goal-Oriented Action Planners"></a>Goal-Oriented Action Planners</h2><p>目标导向型行为选择</p>
+<blockquote>
+<p> GOAP is derived from the Stanford Research Institute Problem Solver </p>
+</blockquote>
+<p>给予一个目标，然后在所有可选的方法中自行选择，让AI自动选择。</p>
+]]></content>
+      <categories>
+        <category>游戏相关</category>
+      </categories>
+      <tags>
+        <tag>GameDev</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>记一次被诈骗经历</title>
+    <url>/2023/08/29/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%AF%88%E9%AA%97%E7%BB%8F%E5%8E%86/</url>
+    <content><![CDATA[<!-- TOC -->
+<ul>
+<li><a href="#%E7%BB%8F%E5%8E%86%E5%A4%8D%E7%9B%98-">经历复盘</a><ul>
+<li><a href="#%E8%B5%B7%E5%9B%A0-">起因</a></li>
+<li><a href="#%E7%A5%9E%E7%A7%98%E9%82%AE%E4%BB%B6%E5%9C%B0%E5%9D%80">神秘邮件地址</a></li>
+<li><a href="#%E8%A7%A3%E5%86%BB%E8%B4%A6%E5%8F%B7">解冻账号</a></li>
+<li><a href="#%E4%BA%8B%E5%90%8E%E5%A4%84%E7%90%86">事后处理</a></li>
+</ul>
+</li>
+<li><a href="#%E8%8E%B7%E5%BE%97%E6%95%99%E8%AE%AD">获得教训</a><ul>
+<li><a href="#%E9%9D%A2%E5%AF%B9%E6%B6%89%E5%8F%8A%E9%92%B1%E8%B4%A2%E7%9A%84%E4%BA%8B%E6%83%85%E8%B0%A8%E6%85%8E%E5%86%8D%E8%B0%A8%E6%85%8E">面对涉及钱财的事情谨慎再谨慎</a></li>
+<li><a href="#%E4%B8%8D%E8%A6%81%E8%B4%B7%E6%AC%BE%E5%90%83-">不要贷款吃💩</a></li>
+<li><a href="#%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E4%BF%9D%E6%8A%A4">个人信息保护</a></li>
+<li><a href="#%E5%AF%B9%E8%8B%B1%E8%AF%AD%E8%AF%B4%E6%97%A5%E8%AF%AD%E5%AF%B9%E6%97%A5%E8%AF%AD%E8%AF%B4%E8%8B%B1%E8%AF%AD%E4%BC%98%E5%85%88%E4%B8%AD%E6%96%87">对英语说日语，对日语说英语，优先中文</a></li>
+<li><a href="#%E6%9C%80%E5%90%8E">最后</a><!-- TOC --></li>
+</ul>
+</li>
+</ul>
+<p>先说结果: 共计被诈骗1032元  </p>
+<h1 id="经历复盘"><a href="#经历复盘" class="headerlink" title="经历复盘"></a>经历复盘</h1><h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>在steam平台上，有个「<font color='RED'>1</font>」级的账号突然加我好友，想着以前喜欢扩列，就发了很多交友信息，没想太多就同意了。没想到的是，到了晚上11点，他突然用「<mark>英语</mark>」给我发消息,说有个和我头像昵称一样的人买了一个$1500的饰品，问账号是不是我，并且说他跟steam客服交谈，我的账号正在被封禁。而我本人是不能看到的，而且还煞有其事地拿出截图，看着挺正式，我也就没有怀疑。</p>
+<h2 id="神秘邮件地址"><a href="#神秘邮件地址" class="headerlink" title="神秘邮件地址"></a>神秘邮件地址</h2><p>之后他让我给一个地址发邮件，解释这是一个误会，希望得到客服帮助，这个地址一眼看不出问题，我也就发了，过了一会有了回信，并且附上了一个人的联系方式，让我添加他为好友。 到这一步真的是槽点很多，任何一步发现问题都没有后面的事了。但是当时脑子确实没有反应过来。就上当了。</p>
+<h2 id="解冻账号"><a href="#解冻账号" class="headerlink" title="解冻账号"></a>解冻账号</h2><p>添加上之后，对方说要通过支付宝和微信进行临时支付，<strong>这些钱会在验证完成后退回</strong>，而到这里，一般情况下会起疑心，但是不知道为什么当时一点都没有怀疑，反而继续付款，支付宝损失了600，随后是微信，好在，微信在我支付了400之后冻结了我的转账功能，这个时候我才反应过来，到底是早还是晚。随后报警。</p>
+<h2 id="事后处理"><a href="#事后处理" class="headerlink" title="事后处理"></a>事后处理</h2><p>虽然报警了，但是由于steam平台不受国内监管，付款地址也无法追踪，能够追回的希望非常渺茫，只好做了简单的记录回家了。当时已经是凌晨1点了，到家之后迟迟不能睡去，直到4点，请了一上午假，换换心情。当时很想注销账号，以免再次被骗。不过还是没有这样做，不然又会增加损失。</p>
+<h1 id="获得教训"><a href="#获得教训" class="headerlink" title="获得教训"></a>获得教训</h1><h2 id="面对涉及钱财的事情谨慎再谨慎"><a href="#面对涉及钱财的事情谨慎再谨慎" class="headerlink" title="面对涉及钱财的事情谨慎再谨慎"></a>面对涉及钱财的事情谨慎再谨慎</h2><p>真的是墨菲定律，越怕什么越来什么，但是有句话也说的对:”能用钱买到的教训是最值的教训”, 这件事肯定能让我记至少20年。以后面对涉及钱财的事情，首要目标是不花钱。避免被骗。</p>
+<h2 id="不要贷款吃💩"><a href="#不要贷款吃💩" class="headerlink" title="不要贷款吃💩"></a>不要贷款吃💩</h2><p>为什么要这么说，对方说的是我的账号<mark>将要</mark>被冻结, 现在是如何补救。那么我能不能等到他真给我封禁了，我再想办法补救呢？一旦想着提前补救，这就中了骗子的套路了。</p>
+<h2 id="个人信息保护"><a href="#个人信息保护" class="headerlink" title="个人信息保护"></a>个人信息保护</h2><p>对方能加我好友，并且获取到我的详细信息，自己没有保护好隐私也算是一个原因，所以之后个人信息要注重保护，不会再公开场合泄露个人信息。或者，使用伪造的假信息。</p>
+<h2 id="对英语说日语，对日语说英语，优先中文"><a href="#对英语说日语，对日语说英语，优先中文" class="headerlink" title="对英语说日语，对日语说英语，优先中文"></a>对英语说日语，对日语说英语，优先中文</h2><p>也许是看到对方说的英文所以警惕性变低了，如果对方说中文肯定会有所怀疑，因此，以后面对这种事，第一要义就是以英语对日语，以日语对英语。同时注意对方语法是否对。<br>日语是主宾谓，英语和汉语一样主谓宾，通过这点可以筛选出是不是机翻，其次再统一说中文，提高警惕。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>我估计是之前在酒店登录steam账号导致账号信息泄露了，实在是不应该，损失最大化，因此以后的生活中，一定要记录花销，设定目标限额，一切都从自身出发.</p>
+]]></content>
+      <tags>
+        <tag>生活</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>详解从jenkins到docker的迁移过程</title>
+    <url>/2023/09/08/%E8%AF%A6%E8%A7%A3%E4%BB%8Ejenkins%E5%88%B0docker%E7%9A%84%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<p><mark>建设中</mark></p>
+<p>关键词： Jenkins, Docker, kaniko, 持续集成，容器化， maven</p>
+<p>到现在为止，项目已经在docker上运行了至少一个月了，目前来看，除了资源占用大，响应慢，启动慢，查问题麻烦等等，唯一的好处就是发版变得更加容易了。<br>早就听说最原始的版本，就是在本地打包，然后发布到远程服务器上，这种情况下需要手动处理冲突，如果缺少jar包，还少手动去修复。<br>之后，在我入职的时候已经是下一阶段了——Jenkins服务器部署，和之前相比，这种部署方式不需要考虑上传，启动等，但是还是需要在发布完之后登录每台服务器检测是否正常启动<br>直到现在的容器化，这些问题基本上得到解决：打包的同时会处理依赖冲突，无感知切换，skywalking,收集日志到ES中进行处理。真正做到了一键部署，虽然现在稳定性不是很好，在部署扩展方面已经比以前好很多了。</p>
+<p>首先从项目的架构开始说起，与其说是微服务，实际上的感觉就像<code>分布式单体</code>,  其实关于这个，还是有些争议的。我一开始也认为</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>Java Spring</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>项目中elasticsearch的应用及思考</title>
+    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%ADelasticsearch%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/</url>
+    <content><![CDATA[<p><mark>建设中</mark>  </p>
+<p>关键字： MySQL, binlog, canal, 搜索，导出， elasticsearch, 模块</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+        <category>中间件</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Spring</tag>
+        <tag>ES</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>项目中缓存中间件的应用及思考</title>
+    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/</url>
+    <content><![CDATA[<p><mark>建设中</mark></p>
+<p>关键词：Redis，ehCache， hutool-cache，guava-cache</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+        <category>中间件</category>
+      </categories>
+      <tags>
+        <tag>Java Redis</tag>
+        <tag>缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>项目中设计模式的尝试与反馈</title>
+    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%B0%9D%E8%AF%95%E4%B8%8E%E5%8F%8D%E9%A6%88/</url>
+    <content><![CDATA[<p><mark>建设中</mark><br>与其说Java是面向对象的，不如说是在面向对象的语言中实现面向过程. 一个方法里成千上万行逻辑，if用的也是尤达表达式，很难不让人怀疑原先维护这个项目的人是不是写C语言的。</p>
+<p>其实就算是C语言的函数，也没有这样一个函数写到底的，大都是按功能进行拆分，那么在这个项目中</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Coding</tag>
+      </tags>
+  </entry>
+</search>
