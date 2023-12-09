@@ -888,20 +888,6 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
-    <title>项目中设计模式的尝试与反馈</title>
-    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%B0%9D%E8%AF%95%E4%B8%8E%E5%8F%8D%E9%A6%88/</url>
-    <content><![CDATA[<p><mark>建设中</mark><br>与其说Java是面向对象的，不如说是在面向对象的语言中实现面向过程. 一个方法里成千上万行逻辑，if用的也是尤达表达式，很难不让人怀疑原先维护这个项目的人是不是写C语言的。</p>
-<p>其实就算是C语言的函数，也没有这样一个函数写到底的，大都是按功能进行拆分，那么在这个项目中</p>
-]]></content>
-      <categories>
-        <category>开发相关</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Coding</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>项目中缓存中间件的应用及思考</title>
     <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/</url>
     <content><![CDATA[<p><mark>建设中</mark></p>
@@ -914,6 +900,20 @@ class Demo &#123;
       <tags>
         <tag>Java Redis</tag>
         <tag>缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>项目中设计模式的尝试与反馈</title>
+    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%B0%9D%E8%AF%95%E4%B8%8E%E5%8F%8D%E9%A6%88/</url>
+    <content><![CDATA[<p><mark>建设中</mark><br>与其说Java是面向对象的，不如说是在面向对象的语言中实现面向过程. 一个方法里成千上万行逻辑，if用的也是尤达表达式，很难不让人怀疑原先维护这个项目的人是不是写C语言的。</p>
+<p>其实就算是C语言的函数，也没有这样一个函数写到底的，大都是按功能进行拆分，那么在这个项目中</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Coding</tag>
       </tags>
   </entry>
 </search>
