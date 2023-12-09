@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>游戏AI初探 | 小鹿的空间</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="randomness高斯分布用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。  Average or max speed  Average or max acceleration  Size, width, height, or mass Visual or physical reaction time  Fire or reload rate for firing  R">
+<meta property="og:type" content="article">
+<meta property="og:title" content="游戏AI初探">
+<meta property="og:url" content="https://kevinll218.github.io/2023/08/30/%E6%B8%B8%E6%88%8FAI%E5%88%9D%E6%8E%A2/index.html">
+<meta property="og:site_name" content="小鹿的空间">
+<meta property="og:description" content="randomness高斯分布用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。  Average or max speed  Average or max acceleration  Size, width, height, or mass Visual or physical reaction time  Fire or reload rate for firing  R">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-30T06:34:54.000Z">
+<meta property="article:modified_time" content="2023-12-09T03:59:40.115Z">
+<meta property="article:author" content="L.Lu">
+<meta property="article:tag" content="GameDev">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="小鹿的空间" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">小鹿的空间</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://KevinLL218.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-游戏AI初探" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/08/30/%E6%B8%B8%E6%88%8FAI%E5%88%9D%E6%8E%A2/" class="article-date">
+  <time class="dt-published" datetime="2023-08-30T06:34:54.000Z" itemprop="datePublished">2023-08-30</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/">游戏相关</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      游戏AI初探
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="randomness"><a href="#randomness" class="headerlink" title="randomness"></a>randomness</h1><h2 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h2><p>用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。</p>
+<ul>
+<li>Average or max speed </li>
+<li>Average or max acceleration </li>
+<li>Size, width, height, or mass</li>
+<li>Visual or physical reaction time </li>
+<li>Fire or reload rate for firing </li>
+<li>Refresh rate or cool-down rate for healing or special abilities </li>
+<li>Chance of missing or striking a critical hit</li>
+</ul>
+<h2 id="随机数过滤"><a href="#随机数过滤" class="headerlink" title="随机数过滤"></a>随机数过滤</h2><p>为了留住玩家，可以通过对随机数进行过滤，来让玩家或对手获得优势</p>
+<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><p>最后，柏林噪声不仅仅是图像领域，1D柏林噪声可以用于平滑过渡动作，动画，和许多其他的行为。</p>
+<ul>
+<li>Movement (direction, speed, acceleration) </li>
+<li>Layered onto animation (adding noise to facial movement or gaze [Perlin 97]) </li>
+<li>Accuracy (winning or losing streaks, being in the groove, luck, or success) </li>
+<li>Attention (guard alertness, response time) • Play style (defensive, offensive) </li>
+<li>Mood (calm, angry, happy, sad, depressed, manic, bored, engaged)</li>
+</ul>
+<h1 id="FSM"><a href="#FSM" class="headerlink" title="FSM"></a>FSM</h1><pre><code class="java">public abstract class FSMTransition &#123;
+    // 判断当前转换是否成立，如果为真，有条路从当前状态走到目标状态
+    abstract boolean isValid();
+    // 得到状态转换的最终状态
+    abstract FSMachine getNextState();
+    // 发生在原状态和目标状态中间的事
+    abstract void onTransition();
+&#125;
+</code></pre>
+<pre><code class="java">public abstract static class FSMachine &#123;
+    // 进入状态
+    abstract void onEnter();
+    // 每tick更新
+    abstract void onUpdate();
+    // 离开状态
+    abstract void onExit();
+    // 可选的状态转换路线
+    List&lt;FSMTransition&gt; transitions = new ArrayList&lt;&gt;();
+&#125;
+</code></pre>
+<pre><code class="java">public static class FiniteStateMachine &#123;
+    // 主要更新方法
+    void update()&#123;
+        // 判断当前状态的所有可能转换路线
+        for (FSMTransition transition : activeState.transitions) &#123;
+            if (transition.isValid()) &#123; // 如果可以选择该路线
+                activeState.onExit(); 
+                activeState = transition.getNextState();
+                transition.onTransition();
+                activeState.onEnter();
+                break;
+            &#125;
+        &#125;
+        // 更新状态
+        activeState.onUpdate();
+    &#125;;
+    // 状态机所持有的所有状态
+    List&lt;FSMachine&gt; states;
+    // 初始状态
+    FSMachine initState;
+    // 当前状态
+    FSMachine activeState;
+&#125;
+</code></pre>
+<p>需要注意的是，具体的逻辑在<code>onExit(), onUpdate(), onExit(), onTransition()</code>这四个方法中实现，其中，<code>onTransition()</code>方法应与具体AI逻辑无关，如日志记录，全局事件等.</p>
+<h2 id="Hierarchical-FSM"><a href="#Hierarchical-FSM" class="headerlink" title="Hierarchical FSM"></a>Hierarchical FSM</h2><p>当开发到晚期时，状态会几十上百个，增加新状态时会很复杂且容易出错。</p>
+<blockquote>
+<p>在HFSM中，每个单独的状态都是一个状态机。可以使整个状态机分离到单独的多个状态机中.</p>
+</blockquote>
+<h2 id="Behavior-Trees"><a href="#Behavior-Trees" class="headerlink" title="Behavior Trees"></a>Behavior Trees</h2><p>a example:</p>
+<pre><code class="java">public abstract static class Behavior &#123;
+    abstract void onInit(); // 初次进入
+    abstract State update(); // 更新状态
+    abstract void onTerminate(State); // 离开
+&#125;
+</code></pre>
+<p>行为树的实现可以通过<code>装饰器</code>或<code>组合</code>模式去实现。</p>
+<p>新的行为树可以多个实体共享，使用DSL，用于多种逻辑.</p>
+<h2 id="Utility-Systems"><a href="#Utility-Systems" class="headerlink" title="Utility Systems"></a>Utility Systems</h2><p>效用系统，用于处理非布尔值信息。比起饿了吃饭，效用系统计算了多饿，多重等非01信息。通过多种因素计算出一个分数，或者加上一个随机值，根据最终的值进行选择。</p>
+<h2 id="Goal-Oriented-Action-Planners"><a href="#Goal-Oriented-Action-Planners" class="headerlink" title="Goal-Oriented Action Planners"></a>Goal-Oriented Action Planners</h2><p>目标导向型行为选择</p>
+<blockquote>
+<p> GOAP is derived from the Stanford Research Institute Problem Solver </p>
+</blockquote>
+<p>给予一个目标，然后在所有可选的方法中自行选择，让AI自动选择。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kevinll218.github.io/2023/08/30/%E6%B8%B8%E6%88%8FAI%E5%88%9D%E6%8E%A2/" data-id="clpxqlm9l000myokv4a3o4yjl" data-title="游戏AI初探" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GameDev/" rel="tag">GameDev</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/08/31/java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          java动态代理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/08/29/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%AF%88%E9%AA%97%E7%BB%8F%E5%8E%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">记一次被诈骗经历</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/">开发相关</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/%E5%AE%B9%E5%99%A8%E5%8C%96/">容器化</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A5%E5%B8%B8%E7%94%9F%E6%B4%BB/">日常生活</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/">游戏相关</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/%E5%BC%80%E5%8F%91/">开发</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Box2d/" rel="tag">Box2d</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/" rel="tag">Coding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES/" rel="tag">ES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GameDev/" rel="tag">GameDev</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-Redis/" rel="tag">Java Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LibGdx/" rel="tag">LibGdx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E8%AF%AD/" rel="tag">日语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Box2d/" style="font-size: 10px;">Box2d</a> <a href="/tags/Coding/" style="font-size: 10px;">Coding</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/ES/" style="font-size: 10px;">ES</a> <a href="/tags/GameDev/" style="font-size: 12.5px;">GameDev</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java-Redis/" style="font-size: 10px;">Java Redis</a> <a href="/tags/Java-Spring/" style="font-size: 10px;">Java Spring</a> <a href="/tags/LibGdx/" style="font-size: 10px;">LibGdx</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/%E6%97%A5%E8%AF%AD/" style="font-size: 12.5px;">日语</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 17.5px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/09/%E5%9B%9E%E9%A1%BE%E8%BF%87%E5%8E%BB%EF%BC%8C%E5%B1%95%E6%9C%9B%E6%9C%AA%E6%9D%A5/">回顾过去，展望未来</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/08/%E8%AF%A6%E8%A7%A3%E4%BB%8Ejenkins%E5%88%B0docker%E7%9A%84%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B/">详解从jenkins到docker的迁移过程</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/">项目中缓存中间件的应用及思考</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/08/MySQL%E5%BA%94%E5%AF%B9%E4%B8%8A%E4%BA%BF%E7%BA%A7%E5%88%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8C%91%E6%88%98/">MySQL应对上亿级别的数据的挑战</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%ADelasticsearch%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/">项目中elasticsearch的应用及思考</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 L.Lu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

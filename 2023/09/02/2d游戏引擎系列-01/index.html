@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>2d游戏引擎系列-01 | 小鹿的空间</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="创建一个简单的世界 以下是一个简单的世界，其中平台是固定的，角色是可以移动  class Demo &amp;#123;     private OrthographicCamera camera; &#x2F;&#x2F; 正交投影     private World world; &#x2F;&#x2F; 世界     private Box2DDebugRenderer b2dr; &#x2F;&#x2F; 渲染(debug     private Body">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2d游戏引擎系列-01">
+<meta property="og:url" content="https://kevinll218.github.io/2023/09/02/2d%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E7%B3%BB%E5%88%97-01/index.html">
+<meta property="og:site_name" content="小鹿的空间">
+<meta property="og:description" content="创建一个简单的世界 以下是一个简单的世界，其中平台是固定的，角色是可以移动  class Demo &amp;#123;     private OrthographicCamera camera; &#x2F;&#x2F; 正交投影     private World world; &#x2F;&#x2F; 世界     private Box2DDebugRenderer b2dr; &#x2F;&#x2F; 渲染(debug     private Body">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-02T02:38:57.000Z">
+<meta property="article:modified_time" content="2023-12-09T03:59:40.113Z">
+<meta property="article:author" content="L.Lu">
+<meta property="article:tag" content="LibGdx">
+<meta property="article:tag" content="Box2d">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="小鹿的空间" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">小鹿的空间</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS 订阅"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="搜索"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://KevinLL218.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-2d游戏引擎系列-01" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/09/02/2d%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E7%B3%BB%E5%88%97-01/" class="article-date">
+  <time class="dt-published" datetime="2023-09-02T02:38:57.000Z" itemprop="datePublished">2023-09-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/">游戏相关</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      2d游戏引擎系列-01
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="创建一个简单的世界"><a href="#创建一个简单的世界" class="headerlink" title="创建一个简单的世界"></a>创建一个简单的世界</h1><blockquote>
+<p>以下是一个简单的世界，其中平台是固定的，角色是可以移动</p>
+</blockquote>
+<pre><code class="java">class Demo &#123;
+    private OrthographicCamera camera; // 正交投影
+    private World world; // 世界
+    private Box2DDebugRenderer b2dr; // 渲染(debug
+    private Body player; // 角色
+    private Body platform; // 平台
+&#125;
+</code></pre>
+<h2 id="初始化流程"><a href="#初始化流程" class="headerlink" title="初始化流程"></a>初始化流程</h2><ol>
+<li>创建正交投影摄像机</li>
+<li>创建世界</li>
+<li>生成角色</li>
+<li>生成平台</li>
+</ol>
+<pre><code class="java">public class Game &#123;
+    void create() &#123;
+        camera.setToOrth(false, w / 2, h / 2 );
+        world = new World(new Vector2(0, -9.8f), false);
+        player = craetePlayer();
+        platform = createPlatform();
+    &#125;
+&#125;
+</code></pre>
+<h3 id="生成角色和平台"><a href="#生成角色和平台" class="headerlink" title="生成角色和平台"></a>生成角色和平台</h3><blockquote>
+<p>生成角色和平台都可以看作一样的流程</p>
+</blockquote>
+<ol>
+<li>生成BodyDef描述信息</li>
+<li>根据描述信息生成Body</li>
+</ol>
+<pre><code class="java">class Game &#123;
+    void createBody() &#123;
+        Body pBody;
+        // 定义
+        BodyDef def = new BodyDef();
+        def.type = BodyDef.BodyType.DynamicBody; // 活动的还是固定的
+        def.position.set(0,0);
+        def.fixedRotation = true;
+        pBody = world.createBody(def); // 从世界中创建的物体
+
+        // 形状
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(16 / PPM, 16 / PPM); // 半径
+
+        pBody.createFixture(shape, 1.0f);
+        shape.dispose();
+    &#125;
+&#125;
+</code></pre>
+<p>以上是一个简单的创建世界的过程.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://kevinll218.github.io/2023/09/02/2d%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E7%B3%BB%E5%88%97-01/" data-id="clpxqlm980001yokv1vhu0egi" data-title="2d游戏引擎系列-01" class="article-share-link"><span class="fa fa-share">分享</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Box2d/" rel="tag">Box2d</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/LibGdx/" rel="tag">LibGdx</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/09/02/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          日语学习记录(持续更新)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/09/01/Jump-Point-Search-%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">Jump Point Search 路径规划算法</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/">开发相关</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/%E5%AE%B9%E5%99%A8%E5%8C%96/">容器化</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%97%A5%E5%B8%B8%E7%94%9F%E6%B4%BB/">日常生活</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/">游戏相关</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/%E5%BC%80%E5%8F%91/">开发</a></li></ul></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Box2d/" rel="tag">Box2d</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Coding/" rel="tag">Coding</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES/" rel="tag">ES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GameDev/" rel="tag">GameDev</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-Redis/" rel="tag">Java Redis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java-Spring/" rel="tag">Java Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/LibGdx/" rel="tag">LibGdx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/" rel="tag">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Spring/" rel="tag">Spring</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%97%A5%E8%AF%AD/" rel="tag">日语</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%94%9F%E6%B4%BB/" rel="tag">生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%97%E6%B3%95/" rel="tag">算法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BC%93%E5%AD%98/" rel="tag">缓存</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Box2d/" style="font-size: 10px;">Box2d</a> <a href="/tags/Coding/" style="font-size: 10px;">Coding</a> <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/ES/" style="font-size: 10px;">ES</a> <a href="/tags/GameDev/" style="font-size: 12.5px;">GameDev</a> <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Java/" style="font-size: 20px;">Java</a> <a href="/tags/Java-Redis/" style="font-size: 10px;">Java Redis</a> <a href="/tags/Java-Spring/" style="font-size: 10px;">Java Spring</a> <a href="/tags/LibGdx/" style="font-size: 10px;">LibGdx</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Spring/" style="font-size: 15px;">Spring</a> <a href="/tags/%E6%97%A5%E8%AF%AD/" style="font-size: 12.5px;">日语</a> <a href="/tags/%E7%94%9F%E6%B4%BB/" style="font-size: 17.5px;">生活</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 10px;">算法</a> <a href="/tags/%E7%BC%93%E5%AD%98/" style="font-size: 10px;">缓存</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/09/">九月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/08/">八月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/12/09/%E5%9B%9E%E9%A1%BE%E8%BF%87%E5%8E%BB%EF%BC%8C%E5%B1%95%E6%9C%9B%E6%9C%AA%E6%9D%A5/">回顾过去，展望未来</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/08/%E8%AF%A6%E8%A7%A3%E4%BB%8Ejenkins%E5%88%B0docker%E7%9A%84%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B/">详解从jenkins到docker的迁移过程</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/">项目中缓存中间件的应用及思考</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/08/MySQL%E5%BA%94%E5%AF%B9%E4%B8%8A%E4%BA%BF%E7%BA%A7%E5%88%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8C%91%E6%88%98/">MySQL应对上亿级别的数据的挑战</a>
+          </li>
+        
+          <li>
+            <a href="/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%ADelasticsearch%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/">项目中elasticsearch的应用及思考</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 L.Lu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
