@@ -89,7 +89,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-#theme: landscape
+theme: 3-hexo
 #remote_theme: landscape
 
 # Deployment
