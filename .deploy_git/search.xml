@@ -167,6 +167,12 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2013/12/24/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="http://zespia.tw/hexo">Hexo</a>! This is your very first post. Check <a href="http://zespia.tw/hexo/docs">documentation</a> to learn how to use.</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Jump Point Search 路径规划算法</title>
     <url>/2023/09/01/Jump-Point-Search-%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/</url>
     <content><![CDATA[<h1 id="A"><a href="#A" class="headerlink" title="A*"></a>A*</h1><h1 id="Jump-Point-Search"><a href="#Jump-Point-Search" class="headerlink" title="Jump Point Search"></a>Jump Point Search</h1><blockquote>
@@ -265,338 +271,6 @@ class Demo &#123;
       <tags>
         <tag>Java</tag>
         <tag>Spring</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>一次git代码合并导致的问题</title>
-    <url>/2023/09/08/%E4%B8%80%E6%AC%A1git%E4%BB%A3%E7%A0%81%E5%90%88%E5%B9%B6%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<blockquote>
-<p>因为一次代码合并失误，导致线上事故，扣了绩效，引以为戒</p>
-</blockquote>
-<p>在一个月前某次发版的时候，使用cherry-pick不熟练，将别人的代码覆盖了，这一个月的时间造成了一些单子多生成了，产生了比较严重的后果，因此将其记录下来。</p>
-<p>对一个文件进行修改提交之后，另一个人在修改的基础上再次进行修改，然后等到正式上线的时候，最后修改的先发上去，那么问题来了，如果此时我提交第一次修改到master分支，会如何解决冲突？</p>
-<p>这就是这次事故的原因了。 cherry-pick的时候产生了冲突，在解决冲突的时候，使用第一版的代码覆盖了后续的代码。</p>
-<pre><code class="java">// change 1    -- committed by A 1:00
-// change 2    -- committed by B 2:00
-</code></pre>
-<p>如果此时先提交了B，后提交了A，会触发resolve conflict，此时代码是没有B提交，很容易将B代码覆盖，但是如果<strong>隔了几行</strong>，此时提交的顺序就可以改变了. <del>估计是检测了相邻的几行代码</del> </p>
-<p>现阶段对于git的应用还是拉取开发分支到本地，修改后直接提交推送到远程，架构部的推荐方式则是使用多个分支，如<code>hotfix</code>,<code>release</code>,<code>feature</code>等等，分别代表”紧急修补”,”正式”,”业务功能”等，但是由于老项目不支持本地启动，因此无法实现这个设想。</p>
-]]></content>
-      <categories>
-        <category>开发相关</category>
-      </categories>
-      <tags>
-        <tag>Java</tag>
-        <tag>Git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2013/12/24/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="http://zespia.tw/hexo">Hexo</a>! This is your very first post. Check <a href="http://zespia.tw/hexo/docs">documentation</a> to learn how to use.</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>日语学习记录(持续更新)</title>
-    <url>/2023/09/02/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</url>
-    <content><![CDATA[<blockquote>
-<p>风乍起，合当奋意向人生</p>
-</blockquote>
-<p><a href="https://imgur.com/tANbyQ2"><img src="https://i.imgur.com/tANbyQ2.gif" title="source: imgur.com" /></a></p>
-<!-- TOC -->
-<ul>
-<li><a href="#2023%E5%B9%B412%E6%9C%88">2023年12月</a></li>
-<li><a href="#2023%E5%B9%B411%E6%9C%88">2023年11月</a></li>
-<li><a href="#2023%E5%B9%B410%E6%9C%88">2023年10月</a></li>
-<li><a href="#2023%E5%B9%B49%E6%9C%88">2023年9月</a><!-- TOC --></li>
-</ul>
-<p>N1考试时间: <code>2023年12月2日</code>  EXPIRED</p>
-<p>最后更新: <code>2023年12月9日</code></p>
-<h1 id="2023年12月"><a href="#2023年12月" class="headerlink" title="2023年12月"></a>2023年12月</h1><table>
-<thead>
-<tr>
-<th>DAY</th>
-<th>EVENT</th>
-<th>REMARK</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>1日</td>
-<td>到公司研修</td>
-<td>给了一大堆材料，和一本书差不多厚，一起来的还有6人，4名中国人，2名日本人</td>
-</tr>
-<tr>
-<td>4日</td>
-<td>第二天研修</td>
-<td>1号是周五，参加了晚上的公司年会就放假了，今天差不多就把入职的流程都走完了</td>
-</tr>
-<tr>
-<td>5日</td>
-<td>分配项目组</td>
-<td>从今天起正式开始参与工作了</td>
-</tr>
-<tr>
-<td>8日</td>
-<td>着手开发环境</td>
-<td>在座位上待了3天终于拿到电脑开始着手工作了</td>
-</tr>
-<tr>
-<td>9日</td>
-<td>拾起日语教材</td>
-<td>NONE</td>
-</tr>
-</tbody></table>
-<h1 id="2023年11月"><a href="#2023年11月" class="headerlink" title="2023年11月"></a>2023年11月</h1><blockquote>
-<p>这个月主要的工作就是交接，离职手续以及等待签证</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>DAY</th>
-<th>EVENT</th>
-<th>REMARK</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>9日</td>
-<td>下午去了签证代办处</td>
-<td>准备办理签证了</td>
-</tr>
-<tr>
-<td>10日</td>
-<td>上午去海边散步<br/>下午收到大使馆电话调查</td>
-<td>也许从此刻起，心态已经开始改变了吧</td>
-</tr>
-<tr>
-<td>12日</td>
-<td>发工资</td>
-<td>意料之中，毕竟请了很多天假呢</td>
-</tr>
-<tr>
-<td>15日</td>
-<td>正式完成工作交接，离开原公司</td>
-<td>想说的话很多</td>
-</tr>
-<tr>
-<td>16日</td>
-<td>获得签证</td>
-<td>很奇妙的感觉，中午睡觉被广告电话吵醒，心情烦躁刚挂断又来了个电话，告知我签证到了</td>
-</tr>
-<tr>
-<td>17日</td>
-<td>前往济南</td>
-<td>想在离开前见一下朋友</td>
-</tr>
-<tr>
-<td>20日</td>
-<td>到达武汉</td>
-<td>机场中转，倒是遇到了廉价酒店骗局，从村子里一下车就决定立马回去</td>
-</tr>
-<tr>
-<td>21日</td>
-<td>到达杭州</td>
-<td>去看望在浙大读研的朋友，顺便在杭州逛逛</td>
-</tr>
-<tr>
-<td>26日</td>
-<td>到达上海</td>
-<td>打算在机场过一晚上</td>
-</tr>
-<tr>
-<td>27日</td>
-<td>飞机延误三小时，到达成田机场，晚上到达宿舍</td>
-<td>靠窗的座位，第一次看到茫茫大海，交流后得知旁边的女孩是到日本考N1的，也是独自来日本，最后在机场告别，各自奔赴前程</td>
-</tr>
-<tr>
-<td>28日</td>
-<td>今天去了区役所登记住所</td>
-<td>第一次日语实战，磕磕巴巴，听得也云里雾里，体会到了日语不行的痛苦</td>
-</tr>
-<tr>
-<td>29日</td>
-<td>去了秋叶原电器街，又去了ario北砂</td>
-<td>自己一个人办了电话卡，好在店员小哥能听懂我说的日语</td>
-</tr>
-<tr>
-<td>30日</td>
-<td>入职的准备</td>
-<td>今天一天只是去周围转了转，熟悉了环境</td>
-</tr>
-</tbody></table>
-<h1 id="2023年10月"><a href="#2023年10月" class="headerlink" title="2023年10月"></a>2023年10月</h1><table>
-<thead>
-<tr>
-<th>DAY</th>
-<th>EVENT</th>
-<th>REMARK</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>12日</td>
-<td>今天开始请两天假，认真准备第一场日语面试</td>
-<td>今天投递简历后，收到了第一份面试邀约，同时还参加了 fast offer的项目，最后拿到了两家公司的面试机会。</td>
-</tr>
-<tr>
-<td>16日</td>
-<td>上午面试，下午拿到OFFER<br/>开始准备赴日材料</td>
-<td>上午参加公司面试，感觉不错，然后下午的时候就收到了offer，地点东京秋叶原区。约定12月1日入社。提前一周赴日暂时住公司宿舍。</td>
-</tr>
-<tr>
-<td>17日</td>
-<td>上午办护照<br/>返校去取了N2证书</td>
-<td>NONE</td>
-</tr>
-<tr>
-<td>18日</td>
-<td>审批中</td>
-<td>效率很快，护照审批下午就下来了，预计这周五会送到,之后就是申请在留和签证了</td>
-</tr>
-</tbody></table>
-<h1 id="2023年9月"><a href="#2023年9月" class="headerlink" title="2023年9月"></a>2023年9月</h1><table>
-<thead>
-<tr>
-<th>DAY</th>
-<th>EVENT</th>
-<th>REMARK</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>2日</td>
-<td>1. N1语法 5&#x2F;20 <br/> 2. 单词 310</td>
-<td>N1语法主要从《蓝宝书》中学习</td>
-</tr>
-<tr>
-<td>3日</td>
-<td>1. N1语法 6&#x2F;20 <br/> 2. 单词 360</td>
-<td>NONE</td>
-</tr>
-<tr>
-<td>4日</td>
-<td>1. N1语法 7&#x2F;20 <br/> 2. 单词 410</td>
-<td>6号之前学完语法的目标失败，延长两周时间</td>
-</tr>
-<tr>
-<td>5日</td>
-<td>1. N1语法 8&#x2F;20 <br/> 2. 单词 460</td>
-<td>NONE</td>
-</tr>
-<tr>
-<td>8日</td>
-<td>1. N1语法 12&#x2F;20 <br/> 2. 单词 610</td>
-<td>可能是之前学习N2的时候，，教材超纲了，提前学习了很多N1的语法</td>
-</tr>
-<tr>
-<td>13日</td>
-<td>1. N1语法 20&#x2F;20 <br/> 2. 单词 840</td>
-<td>这几天一口气学完所有语法，接下来就是背熟语法，复习N2语法</td>
-</tr>
-<tr>
-<td>15日</td>
-<td>1. 复习语法 <br/> 2. 单词 940</td>
-<td>NONE</td>
-</tr>
-</tbody></table>
-]]></content>
-      <categories>
-        <category>日常生活</category>
-      </categories>
-      <tags>
-        <tag>日语</tag>
-        <tag>生活</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>游戏AI初探</title>
-    <url>/2023/08/30/%E6%B8%B8%E6%88%8FAI%E5%88%9D%E6%8E%A2/</url>
-    <content><![CDATA[<h1 id="randomness"><a href="#randomness" class="headerlink" title="randomness"></a>randomness</h1><h2 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h2><p>用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。</p>
-<ul>
-<li>Average or max speed </li>
-<li>Average or max acceleration </li>
-<li>Size, width, height, or mass</li>
-<li>Visual or physical reaction time </li>
-<li>Fire or reload rate for firing </li>
-<li>Refresh rate or cool-down rate for healing or special abilities </li>
-<li>Chance of missing or striking a critical hit</li>
-</ul>
-<h2 id="随机数过滤"><a href="#随机数过滤" class="headerlink" title="随机数过滤"></a>随机数过滤</h2><p>为了留住玩家，可以通过对随机数进行过滤，来让玩家或对手获得优势</p>
-<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><p>最后，柏林噪声不仅仅是图像领域，1D柏林噪声可以用于平滑过渡动作，动画，和许多其他的行为。</p>
-<ul>
-<li>Movement (direction, speed, acceleration) </li>
-<li>Layered onto animation (adding noise to facial movement or gaze [Perlin 97]) </li>
-<li>Accuracy (winning or losing streaks, being in the groove, luck, or success) </li>
-<li>Attention (guard alertness, response time) • Play style (defensive, offensive) </li>
-<li>Mood (calm, angry, happy, sad, depressed, manic, bored, engaged)</li>
-</ul>
-<h1 id="FSM"><a href="#FSM" class="headerlink" title="FSM"></a>FSM</h1><pre><code class="java">public abstract class FSMTransition &#123;
-    // 判断当前转换是否成立，如果为真，有条路从当前状态走到目标状态
-    abstract boolean isValid();
-    // 得到状态转换的最终状态
-    abstract FSMachine getNextState();
-    // 发生在原状态和目标状态中间的事
-    abstract void onTransition();
-&#125;
-</code></pre>
-<pre><code class="java">public abstract static class FSMachine &#123;
-    // 进入状态
-    abstract void onEnter();
-    // 每tick更新
-    abstract void onUpdate();
-    // 离开状态
-    abstract void onExit();
-    // 可选的状态转换路线
-    List&lt;FSMTransition&gt; transitions = new ArrayList&lt;&gt;();
-&#125;
-</code></pre>
-<pre><code class="java">public static class FiniteStateMachine &#123;
-    // 主要更新方法
-    void update()&#123;
-        // 判断当前状态的所有可能转换路线
-        for (FSMTransition transition : activeState.transitions) &#123;
-            if (transition.isValid()) &#123; // 如果可以选择该路线
-                activeState.onExit(); 
-                activeState = transition.getNextState();
-                transition.onTransition();
-                activeState.onEnter();
-                break;
-            &#125;
-        &#125;
-        // 更新状态
-        activeState.onUpdate();
-    &#125;;
-    // 状态机所持有的所有状态
-    List&lt;FSMachine&gt; states;
-    // 初始状态
-    FSMachine initState;
-    // 当前状态
-    FSMachine activeState;
-&#125;
-</code></pre>
-<p>需要注意的是，具体的逻辑在<code>onExit(), onUpdate(), onExit(), onTransition()</code>这四个方法中实现，其中，<code>onTransition()</code>方法应与具体AI逻辑无关，如日志记录，全局事件等.</p>
-<h2 id="Hierarchical-FSM"><a href="#Hierarchical-FSM" class="headerlink" title="Hierarchical FSM"></a>Hierarchical FSM</h2><p>当开发到晚期时，状态会几十上百个，增加新状态时会很复杂且容易出错。</p>
-<blockquote>
-<p>在HFSM中，每个单独的状态都是一个状态机。可以使整个状态机分离到单独的多个状态机中.</p>
-</blockquote>
-<h2 id="Behavior-Trees"><a href="#Behavior-Trees" class="headerlink" title="Behavior Trees"></a>Behavior Trees</h2><p>a example:</p>
-<pre><code class="java">public abstract static class Behavior &#123;
-    abstract void onInit(); // 初次进入
-    abstract State update(); // 更新状态
-    abstract void onTerminate(State); // 离开
-&#125;
-</code></pre>
-<p>行为树的实现可以通过<code>装饰器</code>或<code>组合</code>模式去实现。</p>
-<p>新的行为树可以多个实体共享，使用DSL，用于多种逻辑.</p>
-<h2 id="Utility-Systems"><a href="#Utility-Systems" class="headerlink" title="Utility Systems"></a>Utility Systems</h2><p>效用系统，用于处理非布尔值信息。比起饿了吃饭，效用系统计算了多饿，多重等非01信息。通过多种因素计算出一个分数，或者加上一个随机值，根据最终的值进行选择。</p>
-<h2 id="Goal-Oriented-Action-Planners"><a href="#Goal-Oriented-Action-Planners" class="headerlink" title="Goal-Oriented Action Planners"></a>Goal-Oriented Action Planners</h2><p>目标导向型行为选择</p>
-<blockquote>
-<p> GOAP is derived from the Stanford Research Institute Problem Solver </p>
-</blockquote>
-<p>给予一个目标，然后在所有可选的方法中自行选择，让AI自动选择。</p>
-]]></content>
-      <categories>
-        <category>游戏相关</category>
-      </categories>
-      <tags>
-        <tag>GameDev</tag>
       </tags>
   </entry>
   <entry>
@@ -819,20 +493,120 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
-    <title>详解从jenkins到docker的迁移过程</title>
-    <url>/2023/09/08/%E8%AF%A6%E8%A7%A3%E4%BB%8Ejenkins%E5%88%B0docker%E7%9A%84%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<p><mark>建设中</mark></p>
-<p>关键词： Jenkins, Docker, kaniko, 持续集成，容器化， maven</p>
-<p>到现在为止，项目已经在docker上运行了至少一个月了，目前来看，除了资源占用大，响应慢，启动慢，查问题麻烦等等，唯一的好处就是发版变得更加容易了。<br>早就听说最原始的版本，就是在本地打包，然后发布到远程服务器上，这种情况下需要手动处理冲突，如果缺少jar包，还少手动去修复。<br>之后，在我入职的时候已经是下一阶段了——Jenkins服务器部署，和之前相比，这种部署方式不需要考虑上传，启动等，但是还是需要在发布完之后登录每台服务器检测是否正常启动<br>直到现在的容器化，这些问题基本上得到解决：打包的同时会处理依赖冲突，无感知切换，skywalking,收集日志到ES中进行处理。真正做到了一键部署，虽然现在稳定性不是很好，在部署扩展方面已经比以前好很多了。</p>
-<p>首先从项目的架构开始说起，与其说是微服务，实际上的感觉就像<code>分布式单体</code>,  其实关于这个，还是有些争议的。我一开始也认为</p>
+    <title>一次git代码合并导致的问题</title>
+    <url>/2023/09/08/%E4%B8%80%E6%AC%A1git%E4%BB%A3%E7%A0%81%E5%90%88%E5%B9%B6%E5%AF%BC%E8%87%B4%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<blockquote>
+<p>因为一次代码合并失误，导致线上事故，扣了绩效，引以为戒</p>
+</blockquote>
+<p>在一个月前某次发版的时候，使用cherry-pick不熟练，将别人的代码覆盖了，这一个月的时间造成了一些单子多生成了，产生了比较严重的后果，因此将其记录下来。</p>
+<p>对一个文件进行修改提交之后，另一个人在修改的基础上再次进行修改，然后等到正式上线的时候，最后修改的先发上去，那么问题来了，如果此时我提交第一次修改到master分支，会如何解决冲突？</p>
+<p>这就是这次事故的原因了。 cherry-pick的时候产生了冲突，在解决冲突的时候，使用第一版的代码覆盖了后续的代码。</p>
+<pre><code class="java">// change 1    -- committed by A 1:00
+// change 2    -- committed by B 2:00
+</code></pre>
+<p>如果此时先提交了B，后提交了A，会触发resolve conflict，此时代码是没有B提交，很容易将B代码覆盖，但是如果<strong>隔了几行</strong>，此时提交的顺序就可以改变了. <del>估计是检测了相邻的几行代码</del> </p>
+<p>现阶段对于git的应用还是拉取开发分支到本地，修改后直接提交推送到远程，架构部的推荐方式则是使用多个分支，如<code>hotfix</code>,<code>release</code>,<code>feature</code>等等，分别代表”紧急修补”,”正式”,”业务功能”等，但是由于老项目不支持本地启动，因此无法实现这个设想。</p>
 ]]></content>
       <categories>
         <category>开发相关</category>
-        <category>容器化</category>
       </categories>
       <tags>
-        <tag>Java Spring</tag>
-        <tag>Docker</tag>
+        <tag>Java</tag>
+        <tag>Git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>游戏AI初探</title>
+    <url>/2023/08/30/%E6%B8%B8%E6%88%8FAI%E5%88%9D%E6%8E%A2/</url>
+    <content><![CDATA[<h1 id="randomness"><a href="#randomness" class="headerlink" title="randomness"></a>randomness</h1><h2 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h2><p>用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。</p>
+<ul>
+<li>Average or max speed </li>
+<li>Average or max acceleration </li>
+<li>Size, width, height, or mass</li>
+<li>Visual or physical reaction time </li>
+<li>Fire or reload rate for firing </li>
+<li>Refresh rate or cool-down rate for healing or special abilities </li>
+<li>Chance of missing or striking a critical hit</li>
+</ul>
+<h2 id="随机数过滤"><a href="#随机数过滤" class="headerlink" title="随机数过滤"></a>随机数过滤</h2><p>为了留住玩家，可以通过对随机数进行过滤，来让玩家或对手获得优势</p>
+<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><p>最后，柏林噪声不仅仅是图像领域，1D柏林噪声可以用于平滑过渡动作，动画，和许多其他的行为。</p>
+<ul>
+<li>Movement (direction, speed, acceleration) </li>
+<li>Layered onto animation (adding noise to facial movement or gaze [Perlin 97]) </li>
+<li>Accuracy (winning or losing streaks, being in the groove, luck, or success) </li>
+<li>Attention (guard alertness, response time) • Play style (defensive, offensive) </li>
+<li>Mood (calm, angry, happy, sad, depressed, manic, bored, engaged)</li>
+</ul>
+<h1 id="FSM"><a href="#FSM" class="headerlink" title="FSM"></a>FSM</h1><pre><code class="java">public abstract class FSMTransition &#123;
+    // 判断当前转换是否成立，如果为真，有条路从当前状态走到目标状态
+    abstract boolean isValid();
+    // 得到状态转换的最终状态
+    abstract FSMachine getNextState();
+    // 发生在原状态和目标状态中间的事
+    abstract void onTransition();
+&#125;
+</code></pre>
+<pre><code class="java">public abstract static class FSMachine &#123;
+    // 进入状态
+    abstract void onEnter();
+    // 每tick更新
+    abstract void onUpdate();
+    // 离开状态
+    abstract void onExit();
+    // 可选的状态转换路线
+    List&lt;FSMTransition&gt; transitions = new ArrayList&lt;&gt;();
+&#125;
+</code></pre>
+<pre><code class="java">public static class FiniteStateMachine &#123;
+    // 主要更新方法
+    void update()&#123;
+        // 判断当前状态的所有可能转换路线
+        for (FSMTransition transition : activeState.transitions) &#123;
+            if (transition.isValid()) &#123; // 如果可以选择该路线
+                activeState.onExit(); 
+                activeState = transition.getNextState();
+                transition.onTransition();
+                activeState.onEnter();
+                break;
+            &#125;
+        &#125;
+        // 更新状态
+        activeState.onUpdate();
+    &#125;;
+    // 状态机所持有的所有状态
+    List&lt;FSMachine&gt; states;
+    // 初始状态
+    FSMachine initState;
+    // 当前状态
+    FSMachine activeState;
+&#125;
+</code></pre>
+<p>需要注意的是，具体的逻辑在<code>onExit(), onUpdate(), onExit(), onTransition()</code>这四个方法中实现，其中，<code>onTransition()</code>方法应与具体AI逻辑无关，如日志记录，全局事件等.</p>
+<h2 id="Hierarchical-FSM"><a href="#Hierarchical-FSM" class="headerlink" title="Hierarchical FSM"></a>Hierarchical FSM</h2><p>当开发到晚期时，状态会几十上百个，增加新状态时会很复杂且容易出错。</p>
+<blockquote>
+<p>在HFSM中，每个单独的状态都是一个状态机。可以使整个状态机分离到单独的多个状态机中.</p>
+</blockquote>
+<h2 id="Behavior-Trees"><a href="#Behavior-Trees" class="headerlink" title="Behavior Trees"></a>Behavior Trees</h2><p>a example:</p>
+<pre><code class="java">public abstract static class Behavior &#123;
+    abstract void onInit(); // 初次进入
+    abstract State update(); // 更新状态
+    abstract void onTerminate(State); // 离开
+&#125;
+</code></pre>
+<p>行为树的实现可以通过<code>装饰器</code>或<code>组合</code>模式去实现。</p>
+<p>新的行为树可以多个实体共享，使用DSL，用于多种逻辑.</p>
+<h2 id="Utility-Systems"><a href="#Utility-Systems" class="headerlink" title="Utility Systems"></a>Utility Systems</h2><p>效用系统，用于处理非布尔值信息。比起饿了吃饭，效用系统计算了多饿，多重等非01信息。通过多种因素计算出一个分数，或者加上一个随机值，根据最终的值进行选择。</p>
+<h2 id="Goal-Oriented-Action-Planners"><a href="#Goal-Oriented-Action-Planners" class="headerlink" title="Goal-Oriented Action Planners"></a>Goal-Oriented Action Planners</h2><p>目标导向型行为选择</p>
+<blockquote>
+<p> GOAP is derived from the Stanford Research Institute Problem Solver </p>
+</blockquote>
+<p>给予一个目标，然后在所有可选的方法中自行选择，让AI自动选择。</p>
+]]></content>
+      <categories>
+        <category>游戏相关</category>
+      </categories>
+      <tags>
+        <tag>GameDev</tag>
       </tags>
   </entry>
   <entry>
@@ -872,17 +646,212 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
-    <title>项目中设计模式的尝试与反馈</title>
-    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%B0%9D%E8%AF%95%E4%B8%8E%E5%8F%8D%E9%A6%88/</url>
-    <content><![CDATA[<p><mark>建设中</mark><br>与其说Java是面向对象的，不如说是在面向对象的语言中实现面向过程. 一个方法里成千上万行逻辑，if用的也是尤达表达式，很难不让人怀疑原先维护这个项目的人是不是写C语言的。</p>
-<p>其实就算是C语言的函数，也没有这样一个函数写到底的，大都是按功能进行拆分，那么在这个项目中</p>
+    <title>日语学习记录(持续更新)</title>
+    <url>/2023/09/02/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95-%E6%8C%81%E7%BB%AD%E6%9B%B4%E6%96%B0/</url>
+    <content><![CDATA[<blockquote>
+<p>风乍起，合当奋意向人生</p>
+</blockquote>
+<p><a href="https://imgur.com/tANbyQ2"><img src="https://i.imgur.com/tANbyQ2.gif" title="source: imgur.com" /></a></p>
+<!-- TOC -->
+<ul>
+<li><a href="#2023%E5%B9%B412%E6%9C%88">2023年12月</a></li>
+<li><a href="#2023%E5%B9%B411%E6%9C%88">2023年11月</a></li>
+<li><a href="#2023%E5%B9%B410%E6%9C%88">2023年10月</a></li>
+<li><a href="#2023%E5%B9%B49%E6%9C%88">2023年9月</a><!-- TOC --></li>
+</ul>
+<p>N1考试时间: <code>2023年12月2日</code>  EXPIRED</p>
+<p>最后更新: <code>2023年12月9日</code></p>
+<h1 id="2023年12月"><a href="#2023年12月" class="headerlink" title="2023年12月"></a>2023年12月</h1><table>
+<thead>
+<tr>
+<th>DAY</th>
+<th>EVENT</th>
+<th>REMARK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1日</td>
+<td>到公司研修</td>
+<td>给了一大堆材料，和一本书差不多厚，一起来的还有6人，4名中国人，2名日本人</td>
+</tr>
+<tr>
+<td>4日</td>
+<td>第二天研修</td>
+<td>1号是周五，参加了晚上的公司年会就放假了，今天差不多就把入职的流程都走完了</td>
+</tr>
+<tr>
+<td>5日</td>
+<td>分配项目组</td>
+<td>从今天起正式开始参与工作了</td>
+</tr>
+<tr>
+<td>8日</td>
+<td>着手开发环境</td>
+<td>在座位上待了3天终于拿到电脑开始着手工作了</td>
+</tr>
+<tr>
+<td>9日</td>
+<td>拾起日语教材</td>
+<td>NONE</td>
+</tr>
+</tbody></table>
+<h1 id="2023年11月"><a href="#2023年11月" class="headerlink" title="2023年11月"></a>2023年11月</h1><blockquote>
+<p>这个月主要的工作就是交接，离职手续以及等待签证</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>DAY</th>
+<th>EVENT</th>
+<th>REMARK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>9日</td>
+<td>下午去了签证代办处</td>
+<td>准备办理签证了</td>
+</tr>
+<tr>
+<td>10日</td>
+<td>上午去海边散步<br/>下午收到大使馆电话调查</td>
+<td>也许从此刻起，心态已经开始改变了吧</td>
+</tr>
+<tr>
+<td>12日</td>
+<td>发工资</td>
+<td>意料之中，毕竟请了很多天假呢</td>
+</tr>
+<tr>
+<td>15日</td>
+<td>正式完成工作交接，离开原公司</td>
+<td>想说的话很多</td>
+</tr>
+<tr>
+<td>16日</td>
+<td>获得签证</td>
+<td>很奇妙的感觉，中午睡觉被广告电话吵醒，心情烦躁刚挂断又来了个电话，告知我签证到了</td>
+</tr>
+<tr>
+<td>17日</td>
+<td>前往济南</td>
+<td>想在离开前见一下朋友</td>
+</tr>
+<tr>
+<td>20日</td>
+<td>到达武汉</td>
+<td>机场中转，倒是遇到了廉价酒店骗局，从村子里一下车就决定立马回去</td>
+</tr>
+<tr>
+<td>21日</td>
+<td>到达杭州</td>
+<td>去看望在浙大读研的朋友，顺便在杭州逛逛</td>
+</tr>
+<tr>
+<td>26日</td>
+<td>到达上海</td>
+<td>打算在机场过一晚上</td>
+</tr>
+<tr>
+<td>27日</td>
+<td>飞机延误三小时，到达成田机场，晚上到达宿舍</td>
+<td>靠窗的座位，第一次看到茫茫大海，交流后得知旁边的女孩是到日本考N1的，也是独自来日本，最后在机场告别，各自奔赴前程</td>
+</tr>
+<tr>
+<td>28日</td>
+<td>今天去了区役所登记住所</td>
+<td>第一次日语实战，磕磕巴巴，听得也云里雾里，体会到了日语不行的痛苦</td>
+</tr>
+<tr>
+<td>29日</td>
+<td>去了秋叶原电器街，又去了ario北砂</td>
+<td>自己一个人办了电话卡，好在店员小哥能听懂我说的日语</td>
+</tr>
+<tr>
+<td>30日</td>
+<td>入职的准备</td>
+<td>今天一天只是去周围转了转，熟悉了环境</td>
+</tr>
+</tbody></table>
+<h1 id="2023年10月"><a href="#2023年10月" class="headerlink" title="2023年10月"></a>2023年10月</h1><table>
+<thead>
+<tr>
+<th>DAY</th>
+<th>EVENT</th>
+<th>REMARK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>12日</td>
+<td>今天开始请两天假，认真准备第一场日语面试</td>
+<td>今天投递简历后，收到了第一份面试邀约，同时还参加了 fast offer的项目，最后拿到了两家公司的面试机会。</td>
+</tr>
+<tr>
+<td>16日</td>
+<td>上午面试，下午拿到OFFER<br/>开始准备赴日材料</td>
+<td>上午参加公司面试，感觉不错，然后下午的时候就收到了offer，地点东京秋叶原区。约定12月1日入社。提前一周赴日暂时住公司宿舍。</td>
+</tr>
+<tr>
+<td>17日</td>
+<td>上午办护照<br/>返校去取了N2证书</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>18日</td>
+<td>审批中</td>
+<td>效率很快，护照审批下午就下来了，预计这周五会送到,之后就是申请在留和签证了</td>
+</tr>
+</tbody></table>
+<h1 id="2023年9月"><a href="#2023年9月" class="headerlink" title="2023年9月"></a>2023年9月</h1><table>
+<thead>
+<tr>
+<th>DAY</th>
+<th>EVENT</th>
+<th>REMARK</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2日</td>
+<td>1. N1语法 5&#x2F;20 <br/> 2. 单词 310</td>
+<td>N1语法主要从《蓝宝书》中学习</td>
+</tr>
+<tr>
+<td>3日</td>
+<td>1. N1语法 6&#x2F;20 <br/> 2. 单词 360</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>4日</td>
+<td>1. N1语法 7&#x2F;20 <br/> 2. 单词 410</td>
+<td>6号之前学完语法的目标失败，延长两周时间</td>
+</tr>
+<tr>
+<td>5日</td>
+<td>1. N1语法 8&#x2F;20 <br/> 2. 单词 460</td>
+<td>NONE</td>
+</tr>
+<tr>
+<td>8日</td>
+<td>1. N1语法 12&#x2F;20 <br/> 2. 单词 610</td>
+<td>可能是之前学习N2的时候，，教材超纲了，提前学习了很多N1的语法</td>
+</tr>
+<tr>
+<td>13日</td>
+<td>1. N1语法 20&#x2F;20 <br/> 2. 单词 840</td>
+<td>这几天一口气学完所有语法，接下来就是背熟语法，复习N2语法</td>
+</tr>
+<tr>
+<td>15日</td>
+<td>1. 复习语法 <br/> 2. 单词 940</td>
+<td>NONE</td>
+</tr>
+</tbody></table>
 ]]></content>
       <categories>
-        <category>开发相关</category>
+        <category>日常生活</category>
       </categories>
       <tags>
-        <tag>Java</tag>
-        <tag>Coding</tag>
+        <tag>日语</tag>
+        <tag>生活</tag>
       </tags>
   </entry>
   <entry>
@@ -902,6 +871,23 @@ class Demo &#123;
       </tags>
   </entry>
   <entry>
+    <title>详解从jenkins到docker的迁移过程</title>
+    <url>/2023/09/08/%E8%AF%A6%E8%A7%A3%E4%BB%8Ejenkins%E5%88%B0docker%E7%9A%84%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<p><mark>建设中</mark></p>
+<p>关键词： Jenkins, Docker, kaniko, 持续集成，容器化， maven</p>
+<p>到现在为止，项目已经在docker上运行了至少一个月了，目前来看，除了资源占用大，响应慢，启动慢，查问题麻烦等等，唯一的好处就是发版变得更加容易了。<br>早就听说最原始的版本，就是在本地打包，然后发布到远程服务器上，这种情况下需要手动处理冲突，如果缺少jar包，还少手动去修复。<br>之后，在我入职的时候已经是下一阶段了——Jenkins服务器部署，和之前相比，这种部署方式不需要考虑上传，启动等，但是还是需要在发布完之后登录每台服务器检测是否正常启动<br>直到现在的容器化，这些问题基本上得到解决：打包的同时会处理依赖冲突，无感知切换，skywalking,收集日志到ES中进行处理。真正做到了一键部署，虽然现在稳定性不是很好，在部署扩展方面已经比以前好很多了。</p>
+<p>首先从项目的架构开始说起，与其说是微服务，实际上的感觉就像<code>分布式单体</code>,  其实关于这个，还是有些争议的。我一开始也认为</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+        <category>容器化</category>
+      </categories>
+      <tags>
+        <tag>Java Spring</tag>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>项目中缓存中间件的应用及思考</title>
     <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/</url>
     <content><![CDATA[<p><mark>建设中</mark></p>
@@ -914,6 +900,20 @@ class Demo &#123;
       <tags>
         <tag>Java Redis</tag>
         <tag>缓存</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>项目中设计模式的尝试与反馈</title>
+    <url>/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%B0%9D%E8%AF%95%E4%B8%8E%E5%8F%8D%E9%A6%88/</url>
+    <content><![CDATA[<p><mark>建设中</mark><br>与其说Java是面向对象的，不如说是在面向对象的语言中实现面向过程. 一个方法里成千上万行逻辑，if用的也是尤达表达式，很难不让人怀疑原先维护这个项目的人是不是写C语言的。</p>
+<p>其实就算是C语言的函数，也没有这样一个函数写到底的，大都是按功能进行拆分，那么在这个项目中</p>
+]]></content>
+      <categories>
+        <category>开发相关</category>
+      </categories>
+      <tags>
+        <tag>Java</tag>
+        <tag>Coding</tag>
       </tags>
   </entry>
 </search>
