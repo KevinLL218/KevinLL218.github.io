@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>時雨心地</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="時雨心地"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="時雨心地"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta property="og:type" content="blog"><meta property="og:title" content="時雨心地"><meta property="og:url" content="https://kevinll218.github.io/"><meta property="og:site_name" content="時雨心地"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://kevinll218.github.io/img/og_image.png"><meta property="article:author" content="Kevin Lu"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://kevinll218.github.io/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://KevinLL218.github.io"},"headline":"時雨心地","image":["https://kevinll218.github.io/img/og_image.png"],"author":{"@type":"Person","name":"Kevin Lu"},"publisher":{"@type":"Organization","name":"時雨心地","logo":{"@type":"ImageObject","url":"https://kevinll218.github.io/img/logo.svg"}},"description":""}</script><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/idea.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="時雨心地" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2023-09-02T01:38:57.000Z" title="2023/9/2 10:38:57">2023-09-02</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-12-09T07:44:41.677Z" title="2023/12/9 16:44:41">2023-12-09</time></span><span class="level-item"><a class="link-muted" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/">游戏相关</a></span><span class="level-item">2 minutes read (About 235 words)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/09/02/2d%E6%B8%B8%E6%88%8F%E5%BC%95%E6%93%8E%E7%B3%BB%E5%88%97-01/">2d游戏引擎系列-01</a></p><div class="content"><h1 id="创建一个简单的世界"><a href="#创建一个简单的世界" class="headerlink" title="创建一个简单的世界"></a>创建一个简单的世界</h1><blockquote>
+<p>以下是一个简单的世界，其中平台是固定的，角色是可以移动</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> OrthographicCamera camera; <span class="comment">// 正交投影</span></span><br><span class="line">    <span class="keyword">private</span> World world; <span class="comment">// 世界</span></span><br><span class="line">    <span class="keyword">private</span> Box2DDebugRenderer b2dr; <span class="comment">// 渲染(debug</span></span><br><span class="line">    <span class="keyword">private</span> Body player; <span class="comment">// 角色</span></span><br><span class="line">    <span class="keyword">private</span> Body platform; <span class="comment">// 平台</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="初始化流程"><a href="#初始化流程" class="headerlink" title="初始化流程"></a>初始化流程</h2><ol>
+<li>创建正交投影摄像机</li>
+<li>创建世界</li>
+<li>生成角色</li>
+<li>生成平台</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Game</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">create</span><span class="params">()</span> &#123;</span><br><span class="line">        camera.setToOrth(<span class="literal">false</span>, w / <span class="number">2</span>, h / <span class="number">2</span> );</span><br><span class="line">        world = <span class="keyword">new</span> <span class="title class_">World</span>(<span class="keyword">new</span> <span class="title class_">Vector2</span>(<span class="number">0</span>, -<span class="number">9.8f</span>), <span class="literal">false</span>);</span><br><span class="line">        player = craetePlayer();</span><br><span class="line">        platform = createPlatform();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="生成角色和平台"><a href="#生成角色和平台" class="headerlink" title="生成角色和平台"></a>生成角色和平台</h3><blockquote>
+<p>生成角色和平台都可以看作一样的流程</p>
+</blockquote>
+<ol>
+<li>生成BodyDef描述信息</li>
+<li>根据描述信息生成Body</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Game</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">createBody</span><span class="params">()</span> &#123;</span><br><span class="line">        Body pBody;</span><br><span class="line">        <span class="comment">// 定义</span></span><br><span class="line">        <span class="type">BodyDef</span> <span class="variable">def</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BodyDef</span>();</span><br><span class="line">        def.type = BodyDef.BodyType.DynamicBody; <span class="comment">// 活动的还是固定的</span></span><br><span class="line">        def.position.set(<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">        def.fixedRotation = <span class="literal">true</span>;</span><br><span class="line">        pBody = world.createBody(def); <span class="comment">// 从世界中创建的物体</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 形状</span></span><br><span class="line">        <span class="type">PolygonShape</span> <span class="variable">shape</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PolygonShape</span>();</span><br><span class="line">        shape.setAsBox(<span class="number">16</span> / PPM, <span class="number">16</span> / PPM); <span class="comment">// 半径</span></span><br><span class="line"></span><br><span class="line">        pBody.createFixture(shape, <span class="number">1.0f</span>);</span><br><span class="line">        shape.dispose();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上是一个简单的创建世界的过程.</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2023-09-01T07:31:15.000Z" title="2023/9/1 16:31:15">2023-09-01</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-12-09T07:44:41.682Z" title="2023/12/9 16:44:41">2023-12-09</time></span><span class="level-item"><a class="link-muted" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/">游戏相关</a><span> / </span><a class="link-muted" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/%E5%BC%80%E5%8F%91/">开发</a></span><span class="level-item">a minute read (About 113 words)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/09/01/Jump-Point-Search-%E8%B7%AF%E5%BE%84%E8%A7%84%E5%88%92%E7%AE%97%E6%B3%95/">Jump Point Search 路径规划算法</a></p><div class="content"><h1 id="A"><a href="#A" class="headerlink" title="A*"></a>A*</h1><h1 id="Jump-Point-Search"><a href="#Jump-Point-Search" class="headerlink" title="Jump Point Search"></a>Jump Point Search</h1><blockquote>
+<p>JPS可以看作对A*的一个剪枝判断操作,只不过这个判断有些绕. 需要引入几个概念</p>
+</blockquote>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h3 id="强制邻居"><a href="#强制邻居" class="headerlink" title="强制邻居"></a>强制邻居</h3><p>如果不算斜角的话，一共有8种情况，举一个🌰: 当前点N，父节点P在左边，N的左上方有障碍物，上方是路，那么N的上方就是N的强迫邻居</p>
+<h3 id="跳点"><a href="#跳点" class="headerlink" title="跳点"></a>跳点</h3><h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2></div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2023-08-31T01:29:38.000Z" title="2023/8/31 10:29:38">2023-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-12-09T07:44:41.682Z" title="2023/12/9 16:44:41">2023-12-09</time></span><span class="level-item"><a class="link-muted" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/">开发相关</a></span><span class="level-item">7 minutes read (About 980 words)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/08/31/java%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">java动态代理</a></p><div class="content"><!-- TOC -->
+<ul>
+<li><a href="#%E5%89%8D%E8%A8%80-">前言</a></li>
+<li><a href="#%E4%BA%8B%E5%8A%A1">事务</a></li>
+<li><a href="#%E5%A4%B1%E6%95%88">失效</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86">动态代理</a><ul>
+<li><a href="#spring-aop-%E5%92%8C-aspectj">Spring AOP 和 AspectJ</a><ul>
+<li><a href="#aspectj">AspectJ</a></li>
+<li><a href="#spring-aop">Spring AOP</a></li>
+</ul>
+</li>
+<li><a href="#jdk-proxy-%E5%92%8C-cglib">JDK Proxy 和 Cglib</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93">总结</a><!-- TOC --></li>
+</ul>
+<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>某个同事写了逆天代码，大概情况如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    String <span class="title function_">selectByConditionSharding</span><span class="params">(String name)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>逆天在哪呢，根据条件查，但是条件是固定的，名字带分片，实际一点关系都没有. 为别人阅读代码提供困难，这是个人代码习惯的问题了，不再赘述.</p>
+<p>但是在后面的代码中，看到这两行让我有所沉思</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Demo</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    ApplicationContext context;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doSth</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">bean</span> <span class="operator">=</span> context.getBean(<span class="string">&quot;BeanName&quot;</span>);</span><br><span class="line">        bean.doSomeThing();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看的出来,他考虑到了<strong>事务失效</strong>的情况,但是这让我陷入思考:  </p>
+<ol>
+<li>哪些情况下事务会失效</li>
+<li>同一个类中<code>this</code>调用一定会失效吗 (不一定)</li>
+<li>Spring AOP 和 AspectJ 和 cglib到底怎么回事</li>
+</ol>
+<p>带着以上问题，我去谷歌一下，最终整理了一下.</p>
+<h1 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h1><h1 id="失效场景"><a href="#失效场景" class="headerlink" title="失效场景"></a>失效场景</h1><p>常见的几种场景简介,不细说，网上一搜一大堆:</p>
+<ol>
+<li>没有指定且抛出受检异常(所有非<code>RuntimeException</code>) – 配置<code>rollBackFor</code>属性</li>
+<li>异常被内部catch了，没有抛出.   – 最好使用编程式事务<code>transactionTemplate.execute()</code></li>
+<li>同一个类中的方法调用 – 使用AspectJ作为代理方式</li>
+<li>使用了final或static关键字 – 去掉</li>
+<li>修饰符为非public – 改为public</li>
+<li>传播方式设置不对 – 最好默认设置为<code>requied</code></li>
+<li>没有被spring管理，只有bean才能被管理</li>
+<li>多线程… 使用分布式事务吧</li>
+</ol>
+<h1 id="动态代理"><a href="#动态代理" class="headerlink" title="动态代理"></a>动态代理</h1><h2 id="Spring-AOP-和-AspectJ"><a href="#Spring-AOP-和-AspectJ" class="headerlink" title="Spring AOP 和 AspectJ"></a>Spring AOP 和 AspectJ</h2><blockquote>
+<p>这两个东西常常放在一起说明，实际上是两个截然不同的东西。</p>
+</blockquote>
+<p>现在常用的Spring AOP实际上<strong>借用了</strong>AspectJ的一些注解.致使我认为SpringAOP和AspectJ是同一个东西, 在Spring配置中开启<code>&lt;aop:aspectj-autoproxy/&gt;</code>即可识别AspectJ的一些注解</p>
+<h3 id="AspectJ"><a href="#AspectJ" class="headerlink" title="AspectJ"></a>AspectJ</h3><blockquote>
+<p>AspectJ其实(在某些意义下)应该和Lombok并列的存在，某种程度独立于JVM，在编译期间就对类进行织入，实际上运行时已经是被代理的类了。也就是说使用AspectJ代理的类，在加载时就不是它自己了。</p>
+</blockquote>
+<p>因为它是在{编译期间, 编译之后, 加载前}进行织入，所以运行期间就没有它什么事了。</p>
+<h3 id="Spring-AOP"><a href="#Spring-AOP" class="headerlink" title="Spring AOP"></a>Spring AOP</h3><blockquote>
+<p>SpringAOP则是对AOP概念在Spring架构下的一种实现，只在Spring容器中才能实现，无法脱离容器，而且也是在运行期间进行代理。</p>
+</blockquote>
+<p>由于SpringAOP是运行期间进行动态代理的，所以在同一个类中调用自己的方法，是不会被代理，所以使用<code>@Transactional</code>主键的类事务就失效了.</p>
+<p>如果让类内调用保留事务，则必须使用AspectJ来实现动态代理。可以在配置中切换为AspectJ代理</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">tx:annotation-driven</span>  <span class="attr">mode</span>=<span class="string">&quot;aspectj&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="JDK-Proxy-和-Cglib"><a href="#JDK-Proxy-和-Cglib" class="headerlink" title="JDK Proxy 和 Cglib"></a>JDK Proxy 和 Cglib</h2><blockquote>
+<p>动态代理有两种实现方式，一种是JDK原生的方法，另一种则是使用字节码技术。</p>
+</blockquote>
+<p>JDK原生方法实际上就是通过代码实现<code>代理模式</code>, 具体实现方式网上有很多了。总之就是必须要实现接口，编写代码。<br>而使用Cglib则比原生JDK方式更自由，不需要显式实现接口，而是在编译期对源代码进行改写。</p>
+<p>都不能对final修饰的类和方法进行代理。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在同一个类中调用不一定会使事务失效，需要非原生jdk的动态代理方式才能实现，SpringAOP使用了jdk原生的动态代理实现方式，因此不能处理同一个类中的方法调用问题。</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2023-08-30T05:34:54.000Z" title="2023/8/30 14:34:54">2023-08-30</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-12-09T07:44:41.682Z" title="2023/12/9 16:44:41">2023-12-09</time></span><span class="level-item"><a class="link-muted" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/">游戏相关</a></span><span class="level-item">5 minutes read (About 741 words)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/08/30/%E6%B8%B8%E6%88%8FAI%E5%88%9D%E6%8E%A2/">游戏AI初探</a></p><div class="content"><h1 id="randomness"><a href="#randomness" class="headerlink" title="randomness"></a>randomness</h1><h2 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h2><p>用于模拟生活中的一些行为, 可以是物理特性，认知能力，消遣时间或子弹分布。</p>
+<ul>
+<li>Average or max speed </li>
+<li>Average or max acceleration </li>
+<li>Size, width, height, or mass</li>
+<li>Visual or physical reaction time </li>
+<li>Fire or reload rate for firing </li>
+<li>Refresh rate or cool-down rate for healing or special abilities </li>
+<li>Chance of missing or striking a critical hit</li>
+</ul>
+<h2 id="随机数过滤"><a href="#随机数过滤" class="headerlink" title="随机数过滤"></a>随机数过滤</h2><p>为了留住玩家，可以通过对随机数进行过滤，来让玩家或对手获得优势</p>
+<h2 id="噪声"><a href="#噪声" class="headerlink" title="噪声"></a>噪声</h2><p>最后，柏林噪声不仅仅是图像领域，1D柏林噪声可以用于平滑过渡动作，动画，和许多其他的行为。</p>
+<ul>
+<li>Movement (direction, speed, acceleration) </li>
+<li>Layered onto animation (adding noise to facial movement or gaze [Perlin 97]) </li>
+<li>Accuracy (winning or losing streaks, being in the groove, luck, or success) </li>
+<li>Attention (guard alertness, response time) • Play style (defensive, offensive) </li>
+<li>Mood (calm, angry, happy, sad, depressed, manic, bored, engaged)</li>
+</ul>
+<h1 id="FSM"><a href="#FSM" class="headerlink" title="FSM"></a>FSM</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">FSMTransition</span> &#123;</span><br><span class="line">    <span class="comment">// 判断当前转换是否成立，如果为真，有条路从当前状态走到目标状态</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="type">boolean</span> <span class="title function_">isValid</span><span class="params">()</span>;</span><br><span class="line">	<span class="comment">// 得到状态转换的最终状态</span></span><br><span class="line">    <span class="keyword">abstract</span> FSMachine <span class="title function_">getNextState</span><span class="params">()</span>;</span><br><span class="line">	<span class="comment">// 发生在原状态和目标状态中间的事</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onTransition</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">FSMachine</span> &#123;</span><br><span class="line">    <span class="comment">// 进入状态</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onEnter</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 每tick更新</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onUpdate</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 离开状态</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onExit</span><span class="params">()</span>;</span><br><span class="line">    <span class="comment">// 可选的状态转换路线</span></span><br><span class="line">    List&lt;FSMTransition&gt; transitions = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">FiniteStateMachine</span> &#123;</span><br><span class="line">    <span class="comment">// 主要更新方法</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">update</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="comment">// 判断当前状态的所有可能转换路线</span></span><br><span class="line">        <span class="keyword">for</span> (FSMTransition transition : activeState.transitions) &#123;</span><br><span class="line">            <span class="keyword">if</span> (transition.isValid()) &#123; <span class="comment">// 如果可以选择该路线</span></span><br><span class="line">                activeState.onExit(); </span><br><span class="line">                activeState = transition.getNextState();</span><br><span class="line">                transition.onTransition();</span><br><span class="line">                activeState.onEnter();</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 更新状态</span></span><br><span class="line">        activeState.onUpdate();</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// 状态机所持有的所有状态</span></span><br><span class="line">    List&lt;FSMachine&gt; states;</span><br><span class="line">    <span class="comment">// 初始状态</span></span><br><span class="line">    FSMachine initState;</span><br><span class="line">    <span class="comment">// 当前状态</span></span><br><span class="line">    FSMachine activeState;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，具体的逻辑在<code>onExit(), onUpdate(), onExit(), onTransition()</code>这四个方法中实现，其中，<code>onTransition()</code>方法应与具体AI逻辑无关，如日志记录，全局事件等.</p>
+<h2 id="Hierarchical-FSM"><a href="#Hierarchical-FSM" class="headerlink" title="Hierarchical FSM"></a>Hierarchical FSM</h2><p>当开发到晚期时，状态会几十上百个，增加新状态时会很复杂且容易出错。</p>
+<blockquote>
+<p>在HFSM中，每个单独的状态都是一个状态机。可以使整个状态机分离到单独的多个状态机中.</p>
+</blockquote>
+<h2 id="Behavior-Trees"><a href="#Behavior-Trees" class="headerlink" title="Behavior Trees"></a>Behavior Trees</h2><p>a example:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Behavior</span> &#123;</span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onInit</span><span class="params">()</span>; <span class="comment">// 初次进入</span></span><br><span class="line">    <span class="keyword">abstract</span> State <span class="title function_">update</span><span class="params">()</span>; <span class="comment">// 更新状态</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title function_">onTerminate</span><span class="params">(State)</span>; <span class="comment">// 离开</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>行为树的实现可以通过<code>装饰器</code>或<code>组合</code>模式去实现。</p>
+<p>新的行为树可以多个实体共享，使用DSL，用于多种逻辑.</p>
+<h2 id="Utility-Systems"><a href="#Utility-Systems" class="headerlink" title="Utility Systems"></a>Utility Systems</h2><p>效用系统，用于处理非布尔值信息。比起饿了吃饭，效用系统计算了多饿，多重等非01信息。通过多种因素计算出一个分数，或者加上一个随机值，根据最终的值进行选择。</p>
+<h2 id="Goal-Oriented-Action-Planners"><a href="#Goal-Oriented-Action-Planners" class="headerlink" title="Goal-Oriented Action Planners"></a>Goal-Oriented Action Planners</h2><p>目标导向型行为选择</p>
+<blockquote>
+<p> GOAP is derived from the Stanford Research Institute Problem Solver </p>
+</blockquote>
+<p>给予一个目标，然后在所有可选的方法中自行选择，让AI自动选择。</p>
+</div></article></div><div class="card"><div class="card-image"><a class="image is-7by3" href="/2023/08/28/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%AF%88%E9%AA%97%E7%BB%8F%E5%8E%86/"><img class="fill" src="https://img.paulzzh.com/touhou/random" alt="记一次被诈骗经历"></a></div><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2023-08-28T14:12:20.000Z" title="2023/8/28 23:12:20">2023-08-28</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-12-09T07:44:41.682Z" title="2023/12/9 16:44:41">2023-12-09</time></span><span class="level-item">8 minutes read (About 1203 words)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/08/28/%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%A2%AB%E8%AF%88%E9%AA%97%E7%BB%8F%E5%8E%86/">记一次被诈骗经历</a></p><div class="content"><!-- TOC -->
+<ul>
+<li><a href="#%E7%BB%8F%E5%8E%86%E5%A4%8D%E7%9B%98-">经历复盘</a><ul>
+<li><a href="#%E8%B5%B7%E5%9B%A0-">起因</a></li>
+<li><a href="#%E7%A5%9E%E7%A7%98%E9%82%AE%E4%BB%B6%E5%9C%B0%E5%9D%80">神秘邮件地址</a></li>
+<li><a href="#%E8%A7%A3%E5%86%BB%E8%B4%A6%E5%8F%B7">解冻账号</a></li>
+<li><a href="#%E4%BA%8B%E5%90%8E%E5%A4%84%E7%90%86">事后处理</a></li>
+</ul>
+</li>
+<li><a href="#%E8%8E%B7%E5%BE%97%E6%95%99%E8%AE%AD">获得教训</a><ul>
+<li><a href="#%E9%9D%A2%E5%AF%B9%E6%B6%89%E5%8F%8A%E9%92%B1%E8%B4%A2%E7%9A%84%E4%BA%8B%E6%83%85%E8%B0%A8%E6%85%8E%E5%86%8D%E8%B0%A8%E6%85%8E">面对涉及钱财的事情谨慎再谨慎</a></li>
+<li><a href="#%E4%B8%8D%E8%A6%81%E8%B4%B7%E6%AC%BE%E5%90%83-">不要贷款吃💩</a></li>
+<li><a href="#%E4%B8%AA%E4%BA%BA%E4%BF%A1%E6%81%AF%E4%BF%9D%E6%8A%A4">个人信息保护</a></li>
+<li><a href="#%E5%AF%B9%E8%8B%B1%E8%AF%AD%E8%AF%B4%E6%97%A5%E8%AF%AD%E5%AF%B9%E6%97%A5%E8%AF%AD%E8%AF%B4%E8%8B%B1%E8%AF%AD%E4%BC%98%E5%85%88%E4%B8%AD%E6%96%87">对英语说日语，对日语说英语，优先中文</a></li>
+<li><a href="#%E6%9C%80%E5%90%8E">最后</a><!-- TOC --></li>
+</ul>
+</li>
+</ul>
+<p>先说结果: 共计被诈骗1032元  </p>
+<h1 id="经历复盘"><a href="#经历复盘" class="headerlink" title="经历复盘"></a>经历复盘</h1><h2 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h2><p>在steam平台上，有个「<font color='RED'>1</font>」级的账号突然加我好友，想着以前喜欢扩列，就发了很多交友信息，没想太多就同意了。没想到的是，到了晚上11点，他突然用「<mark>英语</mark>」给我发消息,说有个和我头像昵称一样的人买了一个$1500的饰品，问账号是不是我，并且说他跟steam客服交谈，我的账号正在被封禁。而我本人是不能看到的，而且还煞有其事地拿出截图，看着挺正式，我也就没有怀疑。</p>
+<h2 id="神秘邮件地址"><a href="#神秘邮件地址" class="headerlink" title="神秘邮件地址"></a>神秘邮件地址</h2><p>之后他让我给一个地址发邮件，解释这是一个误会，希望得到客服帮助，这个地址一眼看不出问题，我也就发了，过了一会有了回信，并且附上了一个人的联系方式，让我添加他为好友。 到这一步真的是槽点很多，任何一步发现问题都没有后面的事了。但是当时脑子确实没有反应过来。就上当了。</p>
+<h2 id="解冻账号"><a href="#解冻账号" class="headerlink" title="解冻账号"></a>解冻账号</h2><p>添加上之后，对方说要通过支付宝和微信进行临时支付，<strong>这些钱会在验证完成后退回</strong>，而到这里，一般情况下会起疑心，但是不知道为什么当时一点都没有怀疑，反而继续付款，支付宝损失了600，随后是微信，好在，微信在我支付了400之后冻结了我的转账功能，这个时候我才反应过来，到底是早还是晚。随后报警。</p>
+<h2 id="事后处理"><a href="#事后处理" class="headerlink" title="事后处理"></a>事后处理</h2><p>虽然报警了，但是由于steam平台不受国内监管，付款地址也无法追踪，能够追回的希望非常渺茫，只好做了简单的记录回家了。当时已经是凌晨1点了，到家之后迟迟不能睡去，直到4点，请了一上午假，换换心情。当时很想注销账号，以免再次被骗。不过还是没有这样做，不然又会增加损失。</p>
+<h1 id="获得教训"><a href="#获得教训" class="headerlink" title="获得教训"></a>获得教训</h1><h2 id="面对涉及钱财的事情谨慎再谨慎"><a href="#面对涉及钱财的事情谨慎再谨慎" class="headerlink" title="面对涉及钱财的事情谨慎再谨慎"></a>面对涉及钱财的事情谨慎再谨慎</h2><p>真的是墨菲定律，越怕什么越来什么，但是有句话也说的对:”能用钱买到的教训是最值的教训”, 这件事肯定能让我记至少20年。以后面对涉及钱财的事情，首要目标是不花钱。避免被骗。</p>
+<h2 id="不要贷款吃💩"><a href="#不要贷款吃💩" class="headerlink" title="不要贷款吃💩"></a>不要贷款吃💩</h2><p>为什么要这么说，对方说的是我的账号<mark>将要</mark>被冻结, 现在是如何补救。那么我能不能等到他真给我封禁了，我再想办法补救呢？一旦想着提前补救，这就中了骗子的套路了。</p>
+<h2 id="个人信息保护"><a href="#个人信息保护" class="headerlink" title="个人信息保护"></a>个人信息保护</h2><p>对方能加我好友，并且获取到我的详细信息，自己没有保护好隐私也算是一个原因，所以之后个人信息要注重保护，不会再公开场合泄露个人信息。或者，使用伪造的假信息。</p>
+<h2 id="对英语说日语，对日语说英语，优先中文"><a href="#对英语说日语，对日语说英语，优先中文" class="headerlink" title="对英语说日语，对日语说英语，优先中文"></a>对英语说日语，对日语说英语，优先中文</h2><p>也许是看到对方说的英文所以警惕性变低了，如果对方说中文肯定会有所怀疑，因此，以后面对这种事，第一要义就是以英语对日语，以日语对英语。同时注意对方语法是否对。<br>日语是主宾谓，英语和汉语一样主谓宾，通过这点可以筛选出是不是机翻，其次再统一说中文，提高警惕。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>我估计是之前在酒店登录steam账号导致账号信息泄露了，实在是不应该，损失最大化，因此以后的生活中，一定要记录花销，设定目标限额，一切都从自身出发.</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2023-08-21T07:01:30.000Z" title="2023/8/21 16:01:30">2023-08-21</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-12-09T07:44:41.677Z" title="2023/12/9 16:44:41">2023-12-09</time></span><span class="level-item"><a class="link-muted" href="/categories/%E6%97%A5%E5%B8%B8%E7%94%9F%E6%B4%BB/">日常生活</a></span><span class="level-item">5 minutes read (About 685 words)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/08/21/JLPT-N2%E6%88%90%E7%BB%A9%E4%BB%A5%E5%8F%8A%E5%B1%95%E6%9C%9B/">N2成绩以及展望</a></p><div class="content"><!-- TOC -->
+<ul>
+<li><a href="#%E6%88%90%E7%BB%A9">成绩</a><ul>
+<li><a href="#%E5%A5%91%E6%9C%BA">契机</a></li>
+<li><a href="#%E5%9F%BA%E7%A1%80">基础</a></li>
+<li><a href="#%E6%AD%A3%E5%BC%8F%E5%8F%82%E5%8A%A0">正式参加</a></li>
+<li><a href="#%E8%AE%A1%E5%88%92">计划</a><!-- TOC --></li>
+</ul>
+</li>
+</ul>
+<h1 id="成绩"><a href="#成绩" class="headerlink" title="成绩"></a>成绩</h1><table>
+<thead>
+<tr>
+<th align="center">言语</th>
+<th align="center">读解</th>
+<th align="center">听解</th>
+<th align="center">总分</th>
+<th align="center">词汇</th>
+<th align="center">语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">45</td>
+<td align="center">44</td>
+<td align="center">49</td>
+<td align="center">138</td>
+<td align="center">A</td>
+<td align="center">A</td>
+</tr>
+</tbody></table>
+<h2 id="契机"><a href="#契机" class="headerlink" title="契机"></a>契机</h2><p><font size='5'>从</font>五月开始，或者是从年后回来开始复习，准备考N2，想起来当初学日语时，还是初中，空耳假面骑士的中二台词，后来才正式断断续续的自学之路，和网上的方法一样，通过『标准日本语』这本教材开始学习，也幸好自己英语成绩还不错，利用英语课的时间继续学习日语。 </p>
+<h2 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h2><p><font size='5'>高中</font>的时间非常紧张，两周休息一天半，就在这里挤时间学习，终于在高三前学完了初级上下册。听说这个教材有各种问题，但是也算是打下了一个基础了。到了大学时其实基本上已经忘记了。直到大二选修了日语专业的两门课，『日本传统文化』和『日语泛读』，两门都是外教的课，想到日语几乎零基础了，就利用暑假复习了几周，仓促开学😂。  </p>
+<p><font size='5'>惊讶</font>的是，日专大二应该是到了N2的水平了，但是和他们一起上课的时候感觉不到差异，或者说有一些语法知识比他们还要熟悉，最大的差异就是口语了，非专业的没有接受过口语训练，所以即使都能听懂，但是却说不出来。可惜的是，当时有N2考试，但是因为没法从生活费中抽出550元而没有报名。随后就是三年的疫情，就没有后续了。  </p>
+<h2 id="正式参加"><a href="#正式参加" class="headerlink" title="正式参加"></a>正式参加</h2><p><font size='5'>工作</font>之后，因为个人性格问题(如果闲太久反而会恐慌),所以就重拾了日语学习，再加上有工资了，就报考了7月份的N2.不得不说，JLPT真和抢票一样，一不注意就抢不到了。好在最后有惊无险，选到了海大的考点。至此才是真正的开始。也是从这个时候做决定，要去日本生活。此时应该是四月份左右了。到7月2号正式考试，倒是没有遇到很难的问题，可能是有一些基础吧。  </p>
+<h2 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h2><p><font size='5'>N1</font>, 正在准备今年12月份的N1考试。希望能在年前拿到N1证书，这样也是比较有底气。不然只是N2，还是有些不够.</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2013-12-24T08:49:32.000Z" title="2013/12/24 17:49:32">2013-12-24</time></span><span class="level-item">Updated&nbsp;<time dateTime="2023-12-09T07:44:41.682Z" title="2023/12/9 16:44:41">2023-12-09</time></span><span class="level-item">a few seconds read (About 25 words)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2013/12/24/hello-world/">Hello World</a></p><div class="content"><p>Welcome to <a target="_blank" rel="noopener" href="http://zespia.tw/hexo">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="http://zespia.tw/hexo/docs">documentation</a> to learn how to use.</p>
+</div></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/">Previous</a></div><div class="pagination-next is-invisible is-hidden-mobile"><a href="/page/3/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/">1</a></li><li><a class="pagination-link is-current" href="/page/2/">2</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar is-rounded" src="/img/avatar.jpg" alt="Kevin Lu"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Kevin Lu</p><p class="is-size-6 is-block">SE</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Chiyoda, Tokyo, Japan</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">17</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">6</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">16</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/KevinLL218" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/KevinLL218"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="/"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/"><span class="level-start"><span class="level-item">开发相关</span></span><span class="level-end"><span class="level-item tag">8</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/%E4%B8%AD%E9%97%B4%E4%BB%B6/"><span class="level-start"><span class="level-item">中间件</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/%E5%AE%B9%E5%99%A8%E5%8C%96/"><span class="level-start"><span class="level-item">容器化</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></li><li><a class="level is-mobile" href="/categories/%E6%97%A5%E5%B8%B8%E7%94%9F%E6%B4%BB/"><span class="level-start"><span class="level-item">日常生活</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/"><span class="level-start"><span class="level-item">游戏相关</span></span><span class="level-end"><span class="level-item tag">3</span></span></a><ul><li><a class="level is-mobile" href="/categories/%E6%B8%B8%E6%88%8F%E7%9B%B8%E5%85%B3/%E5%BC%80%E5%8F%91/"><span class="level-start"><span class="level-item">开发</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></li></ul></div></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2024/04/"><span class="level-start"><span class="level-item">April 2024</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/10/"><span class="level-start"><span class="level-item">October 2023</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/09/"><span class="level-start"><span class="level-item">September 2023</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li><li><a class="level is-mobile" href="/archives/2023/08/"><span class="level-start"><span class="level-item">August 2023</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/archives/2013/12/"><span class="level-start"><span class="level-item">December 2013</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">Subscribe for updates</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="Subscribe"></div></div></form></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><!--!--><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-04-18T13:07:18.000Z">2024-04-18</time></p><p class="title"><a href="/2024/04/18/%E5%A4%9C%E9%87%8C%E6%95%A3%E6%AD%A5/">夜里散步</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-10-19T10:22:28.000Z">2023-10-19</time></p><p class="title"><a href="/2023/10/19/%E4%BA%BA%E7%94%9F%E7%9A%84%E5%8D%81%E5%AD%97%E8%B7%AF%E5%8F%A3/">人生的十字路口</a></p><p class="categories"><a href="/categories/%E6%97%A5%E5%B8%B8%E7%94%9F%E6%B4%BB/">日常生活</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-09-08T13:06:43.000Z">2023-09-08</time></p><p class="title"><a href="/2023/09/08/%E8%AF%A6%E8%A7%A3%E4%BB%8Ejenkins%E5%88%B0docker%E7%9A%84%E8%BF%81%E7%A7%BB%E8%BF%87%E7%A8%8B/">详解从jenkins到docker的迁移过程</a></p><p class="categories"><a href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/">开发相关</a> / <a href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/%E5%AE%B9%E5%99%A8%E5%8C%96/">容器化</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-09-08T13:06:23.000Z">2023-09-08</time></p><p class="title"><a href="/2023/09/08/%E9%A1%B9%E7%9B%AE%E4%B8%AD%E7%BC%93%E5%AD%98%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%BA%94%E7%94%A8%E5%8F%8A%E6%80%9D%E8%80%83/">项目中缓存中间件的应用及思考</a></p><p class="categories"><a href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/">开发相关</a> / <a href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-09-08T13:06:13.000Z">2023-09-08</time></p><p class="title"><a href="/2023/09/08/MySQL%E5%BA%94%E5%AF%B9%E4%B8%8A%E4%BA%BF%E7%BA%A7%E5%88%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8C%91%E6%88%98/">MySQL应对上亿级别的数据的挑战</a></p><p class="categories"><a href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/">开发相关</a> / <a href="/categories/%E5%BC%80%E5%8F%91%E7%9B%B8%E5%85%B3/%E4%B8%AD%E9%97%B4%E4%BB%B6/">中间件</a></p></div></article></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Box2d/"><span class="tag">Box2d</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Coding/"><span class="tag">Coding</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Docker/"><span class="tag">Docker</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/ES/"><span class="tag">ES</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/GameDev/"><span class="tag">GameDev</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Git/"><span class="tag">Git</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java/"><span class="tag">Java</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java-Redis/"><span class="tag">Java Redis</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Java-Spring/"><span class="tag">Java Spring</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/LibGdx/"><span class="tag">LibGdx</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/MySQL/"><span class="tag">MySQL</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Spring/"><span class="tag">Spring</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E6%97%A5%E8%AF%AD/"><span class="tag">日语</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%94%9F%E6%B4%BB/"><span class="tag">生活</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%AE%97%E6%B3%95/"><span class="tag">算法</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%BC%93%E5%AD%98/"><span class="tag">缓存</span><span class="tag">1</span></a></div></div></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="時雨心地" height="28"></a><p class="is-size-7"><span>&copy; 2024 Kevin Lu</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
