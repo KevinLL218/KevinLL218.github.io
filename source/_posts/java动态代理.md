@@ -5,19 +5,9 @@ update: "2023-08-31 17:21:22"
 categories:
   - 开发相关
 tags: [Java, Spring]
+toc: true
+excerpt: 由一段代码引发的思考...
 ---
-
-<!-- TOC -->
-* [前言](#前言-)
-* [事务](#事务)
-* [失效](#失效)
-* [动态代理](#动态代理)
-  * [Spring AOP 和 AspectJ](#spring-aop-和-aspectj)
-    * [AspectJ](#aspectj)
-    * [Spring AOP](#spring-aop)
-  * [JDK Proxy 和 Cglib](#jdk-proxy-和-cglib)
-* [总结](#总结)
-<!-- TOC -->
 
 # 前言 
 

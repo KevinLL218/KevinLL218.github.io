@@ -1,19 +1,17 @@
 ---
 title: Controller中返回值的处理逻辑
 date: 2023-09-07 15:07:10
+updated: 2024-04-18 22:30:00
 categories:
   - 开发相关
 tags: [Java, Spring]
+toc: true
 ---
 
-<!-- TOC -->
-* [@ResponseBody 注解的处理](#responsebody-注解的处理-)
-* [ContentNegotiationManagerFactoryBean](#contentnegotiationmanagerfactorybean)
-* [ResponseEntity\<T\> 类的使用](#responseentityt-类的使用)
-* [RequestMappingHandlerAdapter](#requestmappinghandleradapter-)
-<!-- TOC -->
-
 在一次开发文件上传下载的任务中，学习了Spring中`Resource`类的使用, 不是`@Resource`, 本地测试项目是可以正常下载的，但是代码提交上去后发现返回的始终都是序列化的对象,而不是具体的文件, 通过对Spring返回值的学习和进一步追踪才找到问题所在。
+
+<!-- more -->
+
 # @ResponseBody 注解的处理  
 
 > `@ResponseBody`注解顾名思义，就是将Controller的返回值经过处理写入到 `Response`中的`Body`字段上.具体处理方式则是通过各种`Converter`的实现类结合`MediaType` 去处理转换。  
